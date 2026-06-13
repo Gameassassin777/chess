@@ -1,289 +1,334 @@
-// Detailed Vector Definitions for Chess Pieces (Classic, Cyber, and Metallic Themes).
-// Classic: High-fidelity traditional Staunton silhouettes.
-// Cyber: Futuristic sci-fi vectors with panel-grid lines, visor glows, and capacitor slots.
-// Metallic: Exquisitely ornate royal vectors with filigree carvings, stone masonry, chainmail, and jewel accents.
+// Detailed Premium Vector Definitions for Chess Pieces across 5 Themes.
+// Classic: High-fidelity traditional Staunton profiles with contours, facial cuts, and details.
+// Cyber: Futuristic robotic designs with sensor domes, glowing visors, and battery capacitor panels.
+// Metallic: Extremely ornate baroque carvings, stone turrets, armored chainmail, and tiara gemstones.
+// Neo: High-end contemporary geometric look with sweeping organic bezier arches and premium accents.
+// Alpha: Classic publication layout with expressive knight silhouettes, flowing mane locks, and clean curves.
 
 const CLASSIC = {
-  P: `<g class="piece-g">
-    <path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linecap="round"/>
+  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 39h22v-3.5H11V39z" fill="var(--piece-fill)"/>
+    <path d="M12.5 35.5c0-1.5 1-3.5 3-4.5h13c2 1 3 3 3 4.5H12.5z" fill="var(--piece-fill)"/>
+    <path d="M17 31c0-1 1-1.5 2.5-2h5c1.5.5 2.5 1 2.5 2H17z" fill="var(--piece-fill)"/>
+    <path d="M18.5 29c-1-3.5-1.5-7.5-1-11h9c.5 3.5 0 7.5-1 11h-7z" fill="var(--piece-fill)"/>
+    <path d="M16 18c0-1 1.5-1.5 6-1.5s6 .5 6 1.5H16z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="12" r="5.5" fill="var(--piece-fill)"/>
+    <path d="M20 9.5c1.2-.8 2.8-.8 4 0" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <path d="M12.5 35.5h19M16.5 31h11" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`,
 
-  R: `<g fill="var(--piece-fill)" fill-rule="evenodd" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 39h27v-3H9v3zM12 36v-4h21v4H12zM11 14V9h4v2h5V9h5v2h5V9h4v5" stroke-linecap="butt"/>
-    <path d="M34 14l-3 3H14l-3-3" stroke-linecap="round"/>
-    <path d="M31 17v12.5H14V17" stroke-linecap="butt" stroke-linejoin="miter"/>
-    <path d="M31 29.5l1.5 2.5h-20l1.5-2.5"/>
-    <path d="M11 14h23" fill="none" stroke-linejoin="miter"/>
-    <path d="M12 35.5h21M13 31.5h19M14 29.5h17" fill="none" stroke="var(--piece-detail)" stroke-width="1"/>
+  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24v-4H10v4z" fill="var(--piece-fill)"/>
+    <path d="M12 35c0-2 1-3 3-3.5h14c2 .5 3 1.5 3 3.5H12z" fill="var(--piece-fill)"/>
+    <path d="M14.5 31.5c-1-4-1-8 0-12h15c1 4 1 8 0 12h-15z" fill="var(--piece-fill)"/>
+    <path d="M13 19.5c0-1 1-1.5 3-2h12c2 .5 3 1 3 2H13z" fill="var(--piece-fill)"/>
+    <path d="M11 17.5v-8h3v3.5h4v-3.5h4v3.5h4v-3.5h4v3.5h3v8H11z" fill="var(--piece-fill)"/>
+    <path d="M15 28.5h14M14.5 25.5h15M15 22.5h14" stroke="var(--piece-detail)" stroke-width="0.8"/>
+    <path d="M18 28.5v-3M26 28.5v-3M22 25.5v-3M18 22.5v-3M26 22.5v-3" stroke="var(--piece-detail)" stroke-width="0.8"/>
+    <path d="M12 35h20M15 31.5h14" stroke="var(--piece-detail)" stroke-width="1.2"/>
   </g>`,
 
-  N: `<g fill="none" fill-rule="evenodd" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M 22,10 C 32.5,11 38.5,18 38,39 L 15,39 C 15,30 25,32.5 23,18" fill="var(--piece-fill)" stroke="var(--piece-stroke)"/>
-    <path d="M 24,18 C 24.38,20.91 18.45,25.37 16,27 C 13,29 13.18,31.34 11,31 C 9.958,30.06 12.41,27.96 11,28 C 10,28 11.19,29.23 10,30 C 9,30 5.997,31 6,26 C 6,24 12,14 12,14 C 12,14 13.89,12.1 14,10.5 C 13.27,9.506 13.5,8.5 13.5,7.5 C 14.5,6.5 16.5,10 16.5,10 L 18.5,10 C 18.5,10 19.28,8.008 21,7 C 22,7 22,10 22,10" fill="var(--piece-fill)" stroke="var(--piece-stroke)"/>
-    <path d="M 9.5 25.5 A 0.5 0.5 0 1 1 8.5,25.5 A 0.5 0.5 0 1 1 9.5 25.5 z" fill="var(--piece-detail)" stroke="var(--piece-detail)"/>
-    <path d="M 15 15.5 A 0.5 1.5 0 1 1 14,15.5 A 0.5 1.5 0 1 1 15 15.5 z" transform="matrix(0.866,0.5,-0.5,0.866,9.693,-5.173)" fill="var(--piece-detail)" stroke="var(--piece-detail)"/>
+  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24c-1-3-3-4-5-4v-1.5c3-1.5 5.5-4 5-8.5-.2-2-.6-3-2-4.5 1-1.5 1.5-3 1-5-.3-1.2-1.2-2.5-2.5-3.5C28.3 10.3 26 9.8 24 10c.8-1 1-2.2.7-3.5-.2-1-.8-2-1.7-2.5-1-.5-2.2-.5-3 .2-.6.5-1 1.2-1.2 2 0-.8-.3-1.5-.8-2.2-.6-.7-1.5-1-2.3-.9-.8.1-1.5.5-2 1.2-.5.7-.7 1.5-.5 2.3-.2-.5-.5-1-1-1.3-.6-.4-1.3-.5-2-.3-.6.1-1.2.5-1.6 1.1-.4.6-.5 1.3-.4 2 .1 1.5 1 2.8 2.2 3.5-1.5 1-2.8 2.5-3.3 4.3-.6 1.8-.4 3.8.3 5.5.8 2 2.2 3.5 4 4.5.3.2.5.5.5.8 0 .8-.5 1.5-1.2 1.8-1 .4-2 0-2.8-.7-.5-.4-1-.3-1.3.2-.3.5-.2 1.2.3 1.5 1.2.8 2.8 1 4.2.5 1-.4 1.8-1.2 2-2.3.1-.4.4-.7.8-.8 1-.2 1.8.3 2.2 1.2.4.9.2 2-.5 2.7-1 1-2.5 1.5-4 1.5H10z" fill="var(--piece-fill)"/>
+    <path d="M14.5 16a1 1 0 1 1 2 0 1 1 0 0 1-2 0z" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M13.5 14.5c1-.5 2.5-.5 3.5.5" stroke="var(--piece-detail)" stroke-width="1"/>
+    <path d="M9.5 20c.5.8 1.5 1.2 2.5 1" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <path d="M8.5 22.5c1 .5 2 .2 2.5-.5" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <path d="M22 13c1.5 1.5 2 3.5 1.5 5.5M25 15c2 2 2.5 4.5 1.5 7M28 18c1.5 2 1.5 4.5.5 6.5" stroke="var(--piece-detail)" stroke-width="1"/>
+    <path d="M11 20.5c1.5-1 3.5-2 5-1.5" stroke="var(--piece-detail)" stroke-width="1"/>
+    <path d="M15 16.5l3.5 6.5" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <circle cx="15.5" cy="17" r="1.5" stroke="var(--piece-detail)" stroke-width="1" fill="var(--piece-fill)"/>
+    <path d="M18.5 23c-1.5 2-1 4.5.5 6" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`,
 
-  B: `<g fill="none" fill-rule="evenodd" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <g fill="var(--piece-fill)" stroke-linecap="butt">
-      <path d="M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.39-.97-10.11.46-13.5-1-3.39 1.46-10.11.03-13.5 1-1.354.49-2.323.47-3-.5 1.354-1.94 3-2 3-2zM15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2zM25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 1 1 5 0z"/>
-    </g>
-    <path d="M17.5 26h10M15 30h15m-7.5-14.5v5M20 18h5" stroke="var(--piece-detail)" stroke-linejoin="miter"/>
+  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 39h22v-3.5H11V39z" fill="var(--piece-fill)"/>
+    <path d="M12.5 35.5c0-2 1-3 3-4h13c2 1 3 2 3 4H12.5z" fill="var(--piece-fill)"/>
+    <path d="M15.5 31.5c0-1 1.5-1.5 3.5-2h6c2 .5 3.5 1 3.5 2H15.5z" fill="var(--piece-fill)"/>
+    <path d="M17.5 29.5c-.8-3-.8-7 0-10h9c.8 3 .8 7 0 10h-9z" fill="var(--piece-fill)"/>
+    <path d="M16 19.5c0-.8 1.5-1.2 6-1.2s6 .4 6 1.2H16z" fill="var(--piece-fill)"/>
+    <path d="M16 18.3c0-3.5 2-6.3 6-9.3 4 3 6 5.8 6 9.3H16z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="7.5" r="1.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <path d="M22 6V3M20.5 4.5h3" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <path d="M20 12l4 4.5" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <circle cx="20" cy="12" r="0.8" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="24" cy="16.5" r="0.8" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M22 18.3V12M17.5 29.5h9M12.5 35.5h19" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`,
 
-  Q: `<g fill="var(--piece-fill)" fill-rule="evenodd" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M8 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM24.5 7.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM41 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM16 8.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM33 9a2 2 0 1 1-4 0 2 2 0 1 1 4 0z"/>
-    <path d="M9 26c8.5-1.5 21-1.5 27 0l2-12-7 11V11l-5.5 13.5-3-15-3 15-5.5-14V25L7 14l2 12zM9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1.5 2.5-1.5 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-8.5-1.5-18.5-1.5-27 0z" stroke-linecap="butt"/>
-    <path d="M11.5 30c3.5-1 18.5-1 22 0M12 33.5c6-1 15-1 21 0" fill="none" stroke="var(--piece-detail)"/>
+  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24v-4H10v4z" fill="var(--piece-fill)"/>
+    <path d="M12 35c0-2.5 1.5-3.5 3.5-4h13c2 .5 3.5 1.5 3.5 4H12z" fill="var(--piece-fill)"/>
+    <path d="M15.5 31c0-1.2 1.5-2 3.5-2.5h6c2 .5 3.5 1.3 3.5 2.5H15.5z" fill="var(--piece-fill)"/>
+    <path d="M18 28.5c-1-4-1.2-8.5 0-12.5h8c1.2 4 1 8.5 0 12.5h-8z" fill="var(--piece-fill)"/>
+    <path d="M16 16c0-1 1.5-1.5 6-1.5s6 .5 6 1.5H16z" fill="var(--piece-fill)"/>
+    <path d="M11 14.5l2 8h18l2-8-3.5 4.5L26 13l-4 6-4-6-3.5 6L11 14.5z" fill="var(--piece-fill)"/>
+    <circle cx="11" cy="14.5" r="1" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="14.5" cy="19" r="1" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="19.5" cy="13" r="1" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="24.5" cy="13" r="1" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="29.5" cy="19" r="1" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="33" cy="14.5" r="1" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <path d="M18 24.5c2 1.5 6 1.5 8 0M12 35h20M15.5 31h13" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`,
 
-  K: `<g fill="none" fill-rule="evenodd" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M22.5 11.63V6M20 8h5" stroke="var(--piece-stroke)" stroke-linejoin="miter"/>
-    <path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-linecap="butt" stroke-linejoin="miter"/>
-    <path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V27v-3.5c-3.5-7.5-13-10.5-16-4-3 6 5 10 5 10V37z" fill="var(--piece-fill)" stroke="var(--piece-stroke)"/>
-    <path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" stroke="var(--piece-detail)"/>
+  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24v-4H10v4z" fill="var(--piece-fill)"/>
+    <path d="M11.5 35c0-2.5 1.5-3.5 3.5-4.5h14c2 1 3.5 2 3.5 4.5H11.5z" fill="var(--piece-fill)"/>
+    <path d="M15 30.5c0-1.5 2-2.5 4-3h6c2 .5 4 1.5 4 3H15z" fill="var(--piece-fill)"/>
+    <path d="M17.5 27.5c-1.2-4.5-1.5-9 0-13.5h9c1.5 4.5 1.2 9 0 13.5h-9z" fill="var(--piece-fill)"/>
+    <path d="M15.5 14c0-1.2 1.5-1.8 6.5-1.8s6.5.6 6.5 1.8H15.5z" fill="var(--piece-fill)"/>
+    <path d="M14 14v4c2 1 4 2 8 1.5s6-.5 8-1.5v-4H14z" fill="var(--piece-fill)"/>
+    <path d="M14 14c-1-5 2-6.5 8-6.5s9 1.5 8 6.5H14z" fill="var(--piece-fill)"/>
+    <path d="M22 7.5V3M20.5 4.5h3" stroke="var(--piece-stroke)" stroke-width="1.5"/>
+    <path d="M19.5 2.5l2.5 1.5 2.5-1.5v4l-2.5-1.5-2.5 1.5v-4z" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <path d="M17.5 23c2.5 2 6.5 2 9 0M11.5 35h21M15 30.5h14" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`
 };
 
 const CYBER = {
-  // Drone pawn with hovering core and capacitor plates
   P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 12,38 L 32,38 L 30,34 L 14,34 Z" fill="var(--piece-stroke)" />
-    <path d="M 15,34 C 13,26 15,22 22,20 C 29,22 31,26 29,34 Z" fill="var(--piece-fill)" />
-    <circle cx="22" cy="14" r="5" fill="var(--piece-fill)" />
-    <line x1="22" y1="20" x2="22" y2="34" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <path d="M 17,25 L 27,25" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <circle cx="22" cy="14" r="2" fill="var(--piece-detail)" stroke="none" />
+    <path d="M11 38h22v-4H11v4z" fill="var(--piece-stroke)"/>
+    <path d="M13 34h18l-1.5-4h-15L13 34z" fill="var(--piece-fill)"/>
+    <path d="M14.5 30l1-8h13l1 8h-15z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="23" r="3" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M17 18.5c0-3.5 2-6.5 5-6.5s5 3 5 6.5H17z" fill="var(--piece-fill)"/>
+    <path d="M18.5 15.5h7" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <line x1="22" y1="23" x2="22" y2="30" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <line x1="17.5" y1="27" x2="26.5" y2="27" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`,
 
-  // Heavy cyber pylon rook with vertical energy vents
   R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,32 L 13,32 Z" fill="var(--piece-stroke)" />
-    <rect x="14" y="18" width="16" height="14" fill="var(--piece-fill)" />
-    <path d="M 12,18 L 12,10 L 16,10 L 16,14 L 20,14 L 20,10 L 24,10 L 24,14 L 28,14 L 28,10 L 32,10 L 32,18 Z" fill="var(--piece-fill)" />
-    <line x1="18" y1="22" x2="18" y2="28" stroke="var(--piece-detail)" stroke-width="2" />
-    <line x1="26" y1="22" x2="26" y2="28" stroke="var(--piece-detail)" stroke-width="2" />
-    <line x1="14" y1="18" x2="30" y2="18" stroke="var(--piece-detail)" stroke-width="1.5" />
+    <path d="M10 38h24v-4H10v4z" fill="var(--piece-stroke)"/>
+    <path d="M12.5 34l1-12h17l1 12H12.5z" fill="var(--piece-fill)"/>
+    <line x1="16.5" y1="31" x2="16.5" y2="25" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <line x1="22" y1="31" x2="22" y2="25" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <line x1="27.5" y1="31" x2="27.5" y2="25" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <path d="M12 22h20v-3H12v3z" fill="var(--piece-stroke)"/>
+    <path d="M11.5 19v-8h4v3h4v-3h5v3h4v-3h3v8H11.5z" fill="var(--piece-fill)"/>
+    <path d="M20.5 16h3v-5h-3v5z" fill="var(--piece-detail)" stroke="none"/>
   </g>`,
 
-  // Mecha-knight with sharp angled visor and robotic mane plates
   N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 L 34,38 L 32,34 L 12,34 Z" fill="var(--piece-stroke)" />
-    <path d="M 31,34 C 31,26 29,20 25,17 C 28,14 29,9 25,7 C 20,5 17,8 14,10 C 11,13 9,17 9,21 C 9,24 11,26 13,26 C 15,26 15,23 18,23 C 21,23 20,27 19,29 C 17,31 13,32 13,34 Z" fill="var(--piece-fill)" />
-    <path d="M 14,13 L 23,17" stroke="var(--piece-detail)" stroke-width="2.5" />
-    <path d="M 23,7 C 22,9 21,12 21,15" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <polygon points="25,9 29,7 27,11" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="15" cy="18" r="1.5" fill="var(--piece-detail)" stroke="none" />
+    <path d="M10 38h24v-4H10v4z" fill="var(--piece-stroke)"/>
+    <path d="M12.5 34c1-4 3-7 6.5-8.5v-1.5c-2-1.5-3-3-4-5.5-.3-1.5.2-3 1-4.5.8-1.5 2.5-3 4-3.5 1.5-.5 3 .2 4 .8.5-1.2 1.5-2.2 3-2.5 1.8-.3 3.5.5 4 2 .8-1 2-1.5 3.5-1.2 1.5.3 2.5 1.8 2.2 3.5-.3 2-2 3.8-3.5 4.5l-3.5 1.8c.8 1.5 1 3.5.5 5.5l-2.5 4.7H10z" fill="var(--piece-fill)"/>
+    <path d="M14.5 16.5l3-1.5" stroke="var(--piece-detail)" stroke-width="2.2"/>
+    <circle cx="14" cy="16.5" r="1.2" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M20.5 24.5l1.5-4M23.5 26l1.5-4M26.5 27.5l1.5-4" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <path d="M18.5 21.5c-1 1-1 2.5.5 3.5" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <path d="M13 32h18" stroke="var(--piece-detail)" stroke-width="1.2"/>
   </g>`,
 
-  // Bishop with split core and floating energy sphere
   B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,34 L 13,34 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,34 C 12,24 16,14 22,11 C 28,14 32,24 30,34 Z" fill="var(--piece-fill)" />
-    <path d="M 22,11 L 22,5 M 19,8 L 25,8" stroke="var(--piece-stroke)" stroke-width="2" />
-    <path d="M 17,20 C 19,25 25,25 27,20" stroke="var(--piece-detail)" stroke-width="2" />
-    <line x1="22" y1="16" x2="22" y2="30" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <circle cx="22" cy="18" r="3" fill="var(--piece-detail)" stroke="none" />
+    <path d="M11 38h22v-4H11v4z" fill="var(--piece-stroke)"/>
+    <path d="M13 34l1-4.5h16l1 4.5H13z" fill="var(--piece-fill)"/>
+    <path d="M15 29.5L16.5 19h11L29 29.5H15z" fill="var(--piece-fill)"/>
+    <line x1="22" y1="28" x2="22" y2="20" stroke="var(--piece-detail)" stroke-width="2"/>
+    <path d="M15 19c0-.8 1.5-1.5 7-1.5s7 .7 7 1.5H15z" fill="var(--piece-stroke)"/>
+    <path d="M16 17.5c0-4 2-7.5 6-7.5s6 3.5 6 7.5H16z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="13.5" r="2.5" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="22" cy="7.5" r="1.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5"/>
+    <path d="M22 6V3" stroke="var(--piece-stroke)" stroke-width="2"/>
   </g>`,
 
-  // Cyber queen with command orbit rings and core columns
   Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,34 L 13,34 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,34 L 10,20 L 17,25 L 22,12 L 27,25 L 34,20 L 30,34 Z" fill="var(--piece-fill)" />
-    <circle cx="10" cy="20" r="2" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="22" cy="12" r="2" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="34" cy="20" r="2" fill="var(--piece-detail)" stroke="none" />
-    <line x1="15" y1="30" x2="29" y2="30" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <path d="M 17,26 L 27,26" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <circle cx="22" cy="22" r="3" fill="var(--piece-detail)" stroke="none" />
+    <path d="M10 38h24v-4H10v4z" fill="var(--piece-stroke)"/>
+    <path d="M12.5 34l1-5h17l1 5H12.5z" fill="var(--piece-fill)"/>
+    <path d="M15.5 29c-1-4-1.2-8.5 0-12.5h13c1.2 4 1 8.5 0 12.5H15.5z" fill="var(--piece-fill)"/>
+    <line x1="19" y1="27" x2="19" y2="18" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <line x1="25" y1="27" x2="25" y2="18" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <path d="M12.5 16.5L9 21.5l5-2.5L22 13l8 6 5 2.5-3.5-5H12.5z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="21.5" r="3.5" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="9" cy="21.5" r="1.2" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="35" cy="21.5" r="1.2" fill="var(--piece-detail)" stroke="none"/>
   </g>`,
 
-  // Cyber King power cell tower with complex stabilizer rails
   K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,34 L 13,34 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,34 L 9,20 L 17,23 L 22,15 L 26,23 L 35,20 L 31,34 Z" fill="var(--piece-fill)" />
-    <path d="M 22,15 L 22,6 M 18,9 L 26,9" stroke="var(--piece-stroke)" stroke-width="2.5" />
-    <line x1="14" y1="30" x2="30" y2="30" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <line x1="16" y1="26" x2="28" y2="26" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <rect x="20" y="19" width="4" height="5" fill="var(--piece-detail)" stroke="none" />
+    <path d="M10 38h24v-4H10v4z" fill="var(--piece-stroke)"/>
+    <path d="M12.5 34c0-2 1-3 3-4h13c2 1 3 2 3 4H12.5z" fill="var(--piece-fill)"/>
+    <path d="M15 30c-1.2-4.5-1.5-9 0-13.5h14c1.5 4.5 1.2 9 0 13.5H15z" fill="var(--piece-fill)"/>
+    <line x1="18.5" y1="27" x2="25.5" y2="27" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <line x1="18.5" y1="23.5" x2="25.5" y2="23.5" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <line x1="18.5" y1="20" x2="25.5" y2="20" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <path d="M14 16.5v4.5c2 1 4 1.5 8 1s6-.5 8-1v-4.5H14z" fill="var(--piece-fill)"/>
+    <path d="M15 16.5c-1-5 2-6.5 7-6.5s8 1.5 7 6.5H15z" fill="var(--piece-fill)"/>
+    <path d="M22 10V3M19 6h6" stroke="var(--piece-stroke)" stroke-width="2.5"/>
+    <circle cx="22" cy="14" r="2.5" fill="var(--piece-detail)" stroke="none"/>
   </g>`
 };
 
 const METALLIC = {
-  // Ornate Royal Shield Pawn
-  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 L 34,38 L 34,35 L 10,35 Z" fill="var(--piece-stroke)" />
-    <path d="M 12,35 L 32,35 L 30,31 L 14,31 Z" fill="var(--piece-fill)" />
-    <path d="M 15,31 C 15,22 17,19 22,18 C 27,19 29,22 29,31 Z" fill="var(--piece-fill)" />
-    <circle cx="22" cy="11.5" r="5.5" fill="var(--piece-fill)" />
-    <path d="M 22,18 C 18,22 18,28 22,31 C 26,28 26,22 22,18" fill="var(--piece-detail)" stroke="none" />
-    <path d="M 18,11.5 H 26" stroke="var(--piece-detail)" stroke-width="1.2" />
+  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 39h22v-3.5H11V39z" fill="var(--piece-fill)" stroke="var(--piece-stroke)"/>
+    <path d="M12.5 35.5c0-1.5 1-3.5 3-4.5h13c2 1 3 3 3 4.5H12.5z" fill="var(--piece-fill)"/>
+    <path d="M16 31c2-1 6-1 8 0" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <path d="M18 29.5c-1-3.5-1.5-7.5-1-11h10c.5 3.5 0 7.5-1 11H18z" fill="var(--piece-fill)"/>
+    <path d="M22 20.5c-1.5 2-1.5 5 0 7s1.5-5 0-7z" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="22" cy="12" r="5.5" fill="var(--piece-fill)"/>
+    <path d="M18.5 12c1.2-1.2 3.8-1.2 5 0" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <circle cx="22" cy="12" r="1.5" fill="var(--piece-detail)" stroke="none"/>
   </g>`,
 
-  // Citadel Bastion Rook with stone-masonry lines and arched windows
-  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 9,39 L 35,39 L 35,36 L 9,36 Z" fill="var(--piece-stroke)" />
-    <path d="M 12,36 L 32,36 L 30,32 L 14,32 Z" fill="var(--piece-fill)" />
-    <path d="M 13,32 L 14.5,18 L 29.5,18 L 31,32 Z" fill="var(--piece-fill)" />
-    <path d="M 11,18 L 11,8 L 15,8 L 15,12 L 20,12 L 20,8 L 24,8 L 24,12 L 29,12 L 29,8 L 33,8 L 33,18 Z" fill="var(--piece-fill)" />
-    <!-- Gothic details and stone carvings -->
-    <path d="M 17,28 L 17,22 C 17,20 20,20 20,22 L 20,28" stroke="var(--piece-detail)" stroke-width="1.2" />
-    <path d="M 24,28 L 24,22 C 24,20 27,20 27,22 L 27,28" stroke="var(--piece-detail)" stroke-width="1.2" />
-    <line x1="14.5" y1="18" x2="29.5" y2="18" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <line x1="13" y1="32" x2="31" y2="32" stroke="var(--piece-detail)" stroke-width="1.2" />
+  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M9 39h26v-4H9v4z" fill="var(--piece-fill)"/>
+    <path d="M11 35c0-2 1-3 3-3.5h16c2 .5 3 1.5 3 3.5H11z" fill="var(--piece-fill)"/>
+    <path d="M13.5 31.5c-1-4-1-8 0-12h17c1 4 1 8 0 12h-17z" fill="var(--piece-fill)"/>
+    <path d="M20 28.5v-4.5c0-1 1-1.5 2-1.5s2 .5 2 1.5v4.5" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <path d="M12 19.5h20v-2H12v2z" fill="var(--piece-fill)"/>
+    <path d="M10.5 17.5v-8h4v3.5h4v-3.5h4v3.5h4v-3.5h4v3.5h2v8H10.5z" fill="var(--piece-fill)"/>
+    <circle cx="14.5" cy="13.5" r="1" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="29.5" cy="13.5" r="1" fill="var(--piece-detail)" stroke="none"/>
   </g>`,
 
-  // Armored warhorse knight with chainmail drape, bridle details, and flowing mane
-  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 9,39 L 35,39 L 33,35 L 11,35 Z" fill="var(--piece-stroke)" />
-    <path d="M 31,35 C 31,24 28,18 24,15 C 28,11 29,6 24,4 C 18,2 14,6 12,9 C 9,12 8,16 8,20 C 8,24 10,26 12,26 C 14,26 15,22 18,22 C 21,22 20,26 19,28 C 17,31 12,32 12,35 Z" fill="var(--piece-fill)" />
-    <!-- Detailed bridle and mane carvings -->
-    <path d="M 13,9 C 14,13 16,16 19,17 C 22,18 24,15 25,12" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <circle cx="16" cy="11" r="1.2" fill="var(--piece-detail)" stroke="none" />
-    <path d="M 20,5 C 21,7 23,8 25,7 M 18,7 C 19,9 21,10 23,9 M 16,9 C 17,11 19,12 21,11" stroke="var(--piece-detail)" stroke-width="1.2" />
-    <path d="M 28,19 C 27,23 27,27 28,31 M 25,18 C 24,22 24,26 25,30 M 22,17 C 21,21 21,25 22,29" stroke="var(--piece-detail)" stroke-width="1" />
+  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24v-4H10v4z" fill="var(--piece-fill)"/>
+    <path d="M12.5 35c1-3.5 2.5-5.5 5.5-6.5v-1.5c-2.5-1.5-4-3.5-4.5-6.5-.3-2 .2-4.2 1.5-6 1-1.5 2.8-3 4.5-3.5.5-1 1.2-1.8 2.2-2.2.8-.3 1.8.2 2.5.8.5-.8 1.5-1.5 2.8-1.2 1 .2 1.8 1.2 2 2.5.2 2-1.2 4-2.5 4.8l-2.8 1.8c.8 1.5.8 3.5.2 5.5l-1.8 4.2H10z" fill="var(--piece-fill)"/>
+    <path d="M20.5 23.5c1 1.2 1.2 2.5 1 3.8M23 21.5c1.2 1.2 1.5 2.8 1 4.2M25.5 19.5c1.2 1.2 1.8 3 1.2 4.8" stroke="var(--piece-detail)" stroke-width="1"/>
+    <path d="M13.5 17.5l4-2 3.5 6-3.5 5.5-4-9.5z" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <circle cx="17.5" cy="20.5" r="1.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="14" cy="14" r="1.2" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M26.5 11c2 1 3.5 3 3 5" stroke="var(--piece-detail)" stroke-width="1"/>
   </g>`,
 
-  // High Mitre Bishop with Celtic engraving and vestment loops
-  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 9,39 L 35,39 L 33,35 L 11,35 Z" fill="var(--piece-stroke)" />
-    <path d="M 12,35 L 32,35 L 30,31 L 14,31 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,31 C 11,21 15,11 22,8 C 29,11 33,21 30,31 Z" fill="var(--piece-fill)" />
-    <path d="M 22,8 L 22,3 M 19,5 L 25,5" stroke="var(--piece-stroke)" stroke-width="2" />
-    <!-- Intricate ceremonial details -->
-    <path d="M 17,21 C 19,25 25,25 27,21" stroke="var(--piece-detail)" stroke-width="1.5" fill="none" />
-    <path d="M 22,8 C 19,12 19,17 22,21 C 25,17 25,12 22,8" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="22" cy="27" r="1.5" fill="var(--piece-detail)" stroke="none" />
-    <path d="M 14,31 H 30" stroke="var(--piece-detail)" stroke-width="1.2" />
+  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 39h22v-3.5H11V39z" fill="var(--piece-fill)"/>
+    <path d="M12.5 35.5c0-2 1-3 3-4h13c2 1 3 2 3 4H12.5z" fill="var(--piece-fill)"/>
+    <path d="M15.5 31.5c2-1 6-1 8 0" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <path d="M17.5 29.5c-.8-3-.8-7 0-10h9c.8 3 .8 7 0 10H17.5z" fill="var(--piece-fill)"/>
+    <path d="M22 20.5c-2.5 2.5 2.5 5 0 7.5s2.5-5 0-7.5z" stroke="var(--piece-detail)" stroke-width="1"/>
+    <path d="M16 19.5c0-.8 1.5-1.2 6-1.2s6 .4 6 1.2H16z" fill="var(--piece-fill)"/>
+    <path d="M16 18.3c0-3.5 2-6.3 6-9.3 4 3 6 5.8 6 9.3H16z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="7.5" r="2.2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <path d="M22 9.5V4M19.5 6.5h5" stroke="var(--piece-stroke)" stroke-width="1.5"/>
   </g>`,
 
-  // Exquisite Tiara Queen with detailed crown arches and robe drapery
-  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 9,39 L 35,39 L 33,35 L 11,35 Z" fill="var(--piece-stroke)" />
-    <path d="M 12,35 L 32,35 L 30,31 L 14,31 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,31 L 10,16 L 16.5,23 L 22,9 L 27.5,23 L 34,16 L 30,31 Z" fill="var(--piece-fill)" />
-    <circle cx="10" cy="16" r="1.8" fill="var(--piece-fill)" />
-    <circle cx="16.5" cy="23" r="1.2" fill="var(--piece-fill)" />
-    <circle cx="22" cy="9" r="2" fill="var(--piece-fill)" />
-    <circle cx="27.5" cy="23" r="1.2" fill="var(--piece-fill)" />
-    <circle cx="34" cy="16" r="1.8" fill="var(--piece-fill)" />
-    <!-- Royal necklace/gown detail carvings -->
-    <path d="M 15,26 C 18,29 26,29 29,26" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <path d="M 13,31 C 16,34 28,34 31,31" stroke="var(--piece-detail)" stroke-width="1.2" />
-    <line x1="22" y1="13" x2="22" y2="25" stroke="var(--piece-detail)" stroke-width="1" />
+  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24v-4H10v4z" fill="var(--piece-fill)"/>
+    <path d="M12 35c0-2.5 1.5-3.5 3.5-4h13c2 .5 3.5 1.5 3.5 4H12z" fill="var(--piece-fill)"/>
+    <path d="M15.5 31c1.5-.8 5-1.2 6.5-.8s5 0 6.5.8H15.5z" fill="var(--piece-fill)"/>
+    <circle cx="18.5" cy="30" r="0.8" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="22" cy="29.5" r="0.8" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="25.5" cy="30" r="0.8" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M18 28.5c-1-4-1.2-8.5 0-12.5h8c1.2 4 1 8.5 0 12.5H18z" fill="var(--piece-fill)"/>
+    <path d="M22 28.5v-12.5" stroke="var(--piece-detail)" stroke-width="1.2"/>
+    <path d="M11 14.5l2 8h18l2-8-3.5 4.5L26 13l-4 6-4-6-3.5 6L11 14.5z" fill="var(--piece-fill)"/>
+    <circle cx="11" cy="14.5" r="1.5" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="19.5" cy="13" r="1.5" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="24.5" cy="13" r="1.5" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
+    <circle cx="33" cy="14.5" r="1.5" fill="var(--piece-detail)" stroke="var(--piece-stroke)" stroke-width="1"/>
   </g>`,
 
-  // Imposing Imperial King with detailed crown, cross finial, and robe trims
-  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 9,39 L 35,39 L 33,35 L 11,35 Z" fill="var(--piece-stroke)" />
-    <path d="M 12,35 L 32,35 L 30,31 L 14,31 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,31 C 9,18 16,19 22,12 C 28,19 35,18 31,31 Z" fill="var(--piece-fill)" />
-    <path d="M 22,12 L 22,3 M 18,6 L 26,6" stroke="var(--piece-stroke)" stroke-width="2.5" />
-    <!-- Imperial jewels and robe lines -->
-    <path d="M 17,21 C 20,23 24,23 27,21" stroke="var(--piece-detail)" stroke-width="1.8" />
-    <circle cx="22" cy="16" r="2" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="16" cy="19" r="1" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="28" cy="19" r="1" fill="var(--piece-detail)" stroke="none" />
-    <path d="M 13,27 C 18,30 26,30 31,27" stroke="var(--piece-detail)" stroke-width="1.2" />
-    <path d="M 12,31 C 17,34 27,34 32,31" stroke="var(--piece-detail)" stroke-width="1.2" />
+  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 39h24v-4H10v4z" fill="var(--piece-fill)"/>
+    <path d="M11.5 35c0-2.5 1.5-3.5 3.5-4.5h14c2 1 3.5 2 3.5 4.5H11.5z" fill="var(--piece-fill)"/>
+    <path d="M15 30.5c2-1 6-1 8 0" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <path d="M17.5 27.5c-1.2-4.5-1.5-9 0-13.5h9c1.5 4.5 1.2 9 0 13.5H17.5z" fill="var(--piece-fill)"/>
+    <path d="M22 25c-1.5-1.5-2.5-3.5 0-5 2.5 1.5 1.5 3.5 0 5z" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M14 14v4c2 1 4 2 8 1.5s6-.5 8-1.5v-4H14z" fill="var(--piece-fill)"/>
+    <path d="M14 14c-1-5 2-6.5 8-6.5s9 1.5 8 6.5H14z" fill="var(--piece-fill)"/>
+    <path d="M22 7.5V3M20.5 4.5h3" stroke="var(--piece-stroke)" stroke-width="1.5"/>
+    <circle cx="22" cy="4.5" r="1" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M15.5 16.5c1.5-1 3.5-1 5 0M23.5 16.5c1.5-1 3.5-1 5 0" stroke="var(--piece-detail)" stroke-width="1.2"/>
   </g>`
 };
 
-
 const NEO = {
-  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 C 11,38 33,38 33,38 C 33,38 31,33 31,33 C 31,33 13,33 13,33 C 13,33 11,38 11,38 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,33 C 14,23 17,19 22,19 C 27,19 30,23 30,33 Z" fill="var(--piece-fill)" />
-    <circle cx="22" cy="13" r="5" fill="var(--piece-fill)" />
-    <circle cx="22" cy="13" r="1.5" fill="var(--piece-detail)" stroke="none" />
+  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 38h20v-4H12v4z" fill="var(--piece-stroke)"/>
+    <path d="M14 34c0-4 1.5-7.5 4-10h8c2.5 2.5 4 6 4 10H14z" fill="var(--piece-fill)"/>
+    <path d="M18 24h8" stroke="var(--piece-detail)" stroke-width="1.5"/>
+    <circle cx="22" cy="14" r="5" fill="var(--piece-fill)"/>
+    <path d="M20 11.5c1.5-.8 3-.8 4 0" stroke="var(--piece-detail)" stroke-width="1.5"/>
   </g>`,
 
-  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
-    <rect x="14" y="19" width="16" height="14" fill="var(--piece-fill)" />
-    <path d="M 12,19 L 12,11 L 16,11 L 16,15 L 20,15 L 20,11 L 24,11 L 24,15 L 28,15 L 28,11 L 32,11 L 32,19 Z" fill="var(--piece-fill)" />
-    <line x1="14" y1="19" x2="30" y2="19" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <line x1="22" y1="22" x2="22" y2="30" stroke="var(--piece-detail)" stroke-width="1.5" />
+  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38h22v-4H11v4z" fill="var(--piece-stroke)"/>
+    <path d="M14 34v-14h16v14H14z" fill="var(--piece-fill)"/>
+    <line x1="22" y1="34" x2="22" y2="20" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <path d="M12 20v-7h4v3.5h4V13h4v3.5h4V13h4v7H12z" fill="var(--piece-fill)"/>
   </g>`,
 
-  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
-    <path d="M 30,33 C 30,25 28,19 23,17 C 26,14 26,9 22,6 C 18,3 15,6 12,9 C 10,12 8,16 8,20 C 8,24 10,25 12,25 C 15,25 16,21 19,21 C 21,21 20,25 19,27 C 17,29 13,30 13,33 Z" fill="var(--piece-fill)" />
-    <path d="M 14,14 C 17,17 21,18 23,17" stroke="var(--piece-detail)" stroke-width="2" />
-    <circle cx="14" cy="18" r="1.5" fill="var(--piece-detail)" stroke="none" />
+  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38h22v-4H11v4z" fill="var(--piece-stroke)"/>
+    <path d="M13 34c1-4.5 3-7.5 6-10 .5-.5 1-1.2 1-2 0-1.8-1-3-2.5-4-1-.8-2-2.5-1.5-4 .5-1.5 2-2.2 3.5-2.5 1.5-.2 2.5.5 3 .8.5-.8 1.5-1.5 2.5-1.2 1 .3 1.5 1.2 1.5 2.2 0 1.5-1 3-2.2 3.8l-2.5 1.8c.8 1.5 1.2 3.5.8 5.5l-2.2 4.6H13z" fill="var(--piece-fill)"/>
+    <path d="M15 15.5l3-1.5" stroke="var(--piece-detail)" stroke-width="2.2"/>
+    <path d="M19 24.5c2 1.5 5 1.5 7 0" stroke="var(--piece-detail)" stroke-width="1.5"/>
   </g>`,
 
-  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,33 C 12,23 16,14 22,12 C 28,14 32,23 30,33 Z" fill="var(--piece-fill)" />
-    <circle cx="22" cy="7" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
-    <path d="M 18,19 C 20,23 24,23 26,19" stroke="var(--piece-detail)" stroke-width="2" />
-    <path d="M 17,15 L 27,25" stroke="var(--piece-detail)" stroke-width="1.5" />
+  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 38h20v-4H12v4z" fill="var(--piece-stroke)"/>
+    <path d="M14 34c0-3 1.5-6.5 4-8.5h8c2.5 2 4 5.5 4 8.5H14z" fill="var(--piece-fill)"/>
+    <path d="M16.5 25.5c0-4 2.5-7.5 5.5-7.5s5.5 3.5 5.5 7.5H16.5z" fill="var(--piece-fill)"/>
+    <path d="M19.5 21l5 4" stroke="var(--piece-detail)" stroke-width="1.8"/>
+    <circle cx="22" cy="14.5" r="1.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5"/>
   </g>`,
 
-  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,33 L 9,19 L 16,24 L 22,12 L 28,24 L 35,19 L 31,33 Z" fill="var(--piece-fill)" />
-    <circle cx="9" cy="19" r="2" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="22" cy="12" r="2" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="35" cy="19" r="2" fill="var(--piece-detail)" stroke="none" />
-    <circle cx="22" cy="23" r="3.5" fill="var(--piece-detail)" stroke="none" />
+  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38h22v-4H11v4z" fill="var(--piece-stroke)"/>
+    <path d="M13.5 34c0-3 1-6.5 3-9h11c2 2.5 3 6 3 9H13.5z" fill="var(--piece-fill)"/>
+    <path d="M13.5 25l-2.5-7 4.5 3.5 6.5-5 6.5 5 4.5-3.5-2.5 7H13.5z" fill="var(--piece-fill)"/>
+    <circle cx="11" cy="18" r="1" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="22" cy="13" r="1" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="33" cy="18" r="1" fill="var(--piece-detail)" stroke="none"/>
+    <circle cx="22" cy="22.5" r="2.5" fill="var(--piece-detail)" stroke="none"/>
   </g>`,
 
-  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,33 L 9,20 L 17,23 L 22,14 L 27,23 L 35,20 L 31,33 Z" fill="var(--piece-fill)" />
-    <path d="M 22,14 L 22,6 M 18,9 L 26,9" stroke="var(--piece-stroke)" stroke-width="2" />
-    <line x1="14" y1="29" x2="30" y2="29" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <line x1="17" y1="25" x2="27" y2="25" stroke="var(--piece-detail)" stroke-width="1.5" />
+  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38h22v-4H11v4z" fill="var(--piece-stroke)"/>
+    <path d="M13.5 34c0-3 1.5-6 3.5-8.5h10c2 2.5 3.5 5.5 3.5 8.5H13.5z" fill="var(--piece-fill)"/>
+    <path d="M15 25.5c-1-3 1.5-5 7-5s8 2 7 5H15z" fill="var(--piece-fill)"/>
+    <path d="M22 20.5V11" stroke="var(--piece-stroke)" stroke-width="2.5"/>
+    <path d="M19 14.5h6" stroke="var(--piece-stroke)" stroke-width="2.5"/>
+    <circle cx="22" cy="22.5" r="2" fill="var(--piece-detail)" stroke="none"/>
   </g>`
 };
 
 const ALPHA = {
-  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 12,37 C 12,37 32,37 32,37 C 32,37 30,34 30,34 C 28,32 26,31 22,31 C 18,31 16,32 14,34 C 14,34 12,37 12,37 Z" fill="var(--piece-stroke)" />
-    <path d="M 15,31 C 15,25 18,20 22,20 C 26,20 29,25 29,31 Z" fill="var(--piece-fill)" />
-    <circle cx="22" cy="12.5" r="5.5" fill="var(--piece-fill)" />
+  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 37.5c0-1 1-2.5 3.5-3.5h13c2.5 1 3.5 2.5 3.5 3.5H12z" fill="var(--piece-stroke)"/>
+    <path d="M14.5 34c0-2.5 1.5-4.5 4-5.5h7c2.5 1 4 3 4 5.5H14.5z" fill="var(--piece-fill)"/>
+    <path d="M17 28.5c-1-3.5-1-7 0-10.5h10c1 3.5 1 7 0 10.5H17z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="13.5" r="5" fill="var(--piece-fill)"/>
   </g>`,
 
-  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 L 34,38 C 34,35 32,34 30,34 L 14,34 C 12,34 10,35 10,38 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,34 L 14.5,20 L 29.5,20 L 31,34 Z" fill="var(--piece-fill)" />
-    <path d="M 12,20 L 12,10 L 16,10 L 16,14 L 20,14 L 20,10 L 24,10 L 24,14 L 28,14 L 28,10 L 32,10 L 32,20 Z" fill="var(--piece-fill)" />
-    <line x1="14.5" y1="20" x2="29.5" y2="20" stroke="var(--piece-detail)" stroke-width="1.5" />
+  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38h22c0-1.5-1-3-3.5-3.5h-15c-2.5.5-3.5 2-3.5 3.5z" fill="var(--piece-stroke)"/>
+    <path d="M13.5 34.5c0-3.5 1-6.5 2-10h13c1 3.5 2 6.5 2 10H13.5z" fill="var(--piece-fill)"/>
+    <path d="M12 24.5v-8h3.5v3.5h4v-3.5h5v3.5h4v-3.5h3.5v8H12z" fill="var(--piece-fill)"/>
+    <line x1="13.5" y1="24.5" x2="30.5" y2="24.5" stroke="var(--piece-detail)" stroke-width="1.5"/>
   </g>`,
 
-  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 C 28,34 26,34 24,34 C 24,34 22,34 20,34 C 20,34 10,38 10,38 Z" fill="var(--piece-stroke)" />
-    <path d="M 30,34 C 30,22 26,17 21,14 C 25,10 24,5 20,4 C 15,3 12,7 10,10 C 8,13 7,17 7,21 C 7,24 9,25 11,25 C 13,25 14,21 17,21 C 19,21 18,25 17,27 C 15,29 11,30 11,34 Z" fill="var(--piece-fill)" />
-    <circle cx="13" cy="11.5" r="1.5" fill="var(--piece-detail)" stroke="none" />
-    <path d="M 18,5 C 20,8 22,9 24,8" stroke="var(--piece-detail)" stroke-width="1.2" />
-    <path d="M 16,7 C 18,10 20,11 22,10" stroke="var(--piece-detail)" stroke-width="1.2" />
+  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38h22c0-1.5-1-3-3.5-3.5h-15c-2.5.5-3.5 2-3.5 3.5z" fill="var(--piece-stroke)"/>
+    <path d="M13 34.5c1-3.5 2.5-6.5 5.5-8.5v-1.5c-2.5-1.5-4.5-3.5-4-6.5.3-2.5 1.5-4.5 3.5-6 1-.8 2.5-1.5 4-1.8 1.5-.3 2.5.5 3 .8.5-1.2 1.5-2 3-2 1.5 0 2.5 1.2 2 2.5-.2 1.5-1.5 3-2.5 3.5l-2.5 1.5c.8 1.5 1 3.5.8 5.5l-2.2 4.7H13z" fill="var(--piece-fill)"/>
+    <circle cx="15.5" cy="15.5" r="1.2" fill="var(--piece-detail)" stroke="none"/>
+    <path d="M22 13c1.5 1.5 2 3.5 1.5 5M25 15.5c2 2 2.5 4 1.5 6M27.5 18c1.5 2 1.5 4.5.5 6" stroke="var(--piece-detail)" stroke-width="1.2"/>
   </g>`,
 
-  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 C 28,34 26,34 24,34 C 24,34 22,34 20,34 C 20,34 10,38 10,38 Z" fill="var(--piece-stroke)" />
-    <path d="M 14,34 C 12,23 16,13 22,10 C 28,13 32,23 30,34 Z" fill="var(--piece-fill)" />
-    <circle cx="22" cy="6" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
-    <path d="M 24,14 L 18,20" stroke="var(--piece-stroke)" stroke-width="1.5" />
-    <path d="M 17,24 C 19,27 25,27 27,24" stroke="var(--piece-detail)" stroke-width="1.5" />
+  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38c0-1.5 1-3 3.5-3.5h15c2.5.5 3.5 2 3.5 3.5H11z" fill="var(--piece-stroke)"/>
+    <path d="M14.5 34.5c0-3.5 1.5-6.5 4-7.5h7c2.5 1 4 4 4 7.5H14.5z" fill="var(--piece-fill)"/>
+    <path d="M16 27c0-4.5 2.5-7.5 6-7.5s6 3 6 7.5H16z" fill="var(--piece-fill)"/>
+    <circle cx="22" cy="18" r="1.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <path d="M22 16.5v-3.5M20.5 14.5h3" stroke="var(--piece-stroke)" stroke-width="1.5"/>
+    <path d="M20 22l4 4" stroke="var(--piece-detail)" stroke-width="1.5"/>
   </g>`,
 
-  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 L 14,34 C 12,34 10,35 10,38 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,34 C 13,34 11,20 11,20 C 11,20 17,24 17,24 C 17,24 22,11 22,11 C 22,11 27,24 27,24 C 27,24 33,20 33,20 C 33,20 31,34 31,34 Z" fill="var(--piece-fill)" />
-    <circle cx="11" cy="20" r="1.8" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1" />
-    <circle cx="22" cy="11" r="2.2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1" />
-    <circle cx="33" cy="20" r="1.8" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1" />
-    <path d="M 16,28 C 19,30 25,30 28,28" stroke="var(--piece-detail)" stroke-width="1.5" />
+  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38c0-1.5 1-3 3.5-3.5h15c2.5.5 3.5 2 3.5 3.5H11z" fill="var(--piece-stroke)"/>
+    <path d="M14.5 34.5c0-4 1.2-8 3.2-11.5h8.6c2 3.5 3.2 7.5 3.2 11.5H14.5z" fill="var(--piece-fill)"/>
+    <path d="M14.5 23L11 17l4.5 3.5 6.5-5 6.5 5 4.5-3.5-3.5 6H14.5z" fill="var(--piece-fill)"/>
+    <circle cx="11" cy="17" r="1.2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <circle cx="22" cy="12" r="1.5" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
+    <circle cx="33" cy="17" r="1.2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.2"/>
   </g>`,
 
-  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 L 14,34 C 12,34 10,35 10,38 Z" fill="var(--piece-stroke)" />
-    <path d="M 13,34 C 9,21 16,21 22,14 C 28,21 35,21 31,34 Z" fill="var(--piece-fill)" />
-    <path d="M 22,14 L 22,5 M 18,8 L 26,8" stroke="var(--piece-stroke)" stroke-width="2.2" />
-    <path d="M 15,26 C 18,29 26,29 29,26" stroke="var(--piece-detail)" stroke-width="1.5" />
-    <path d="M 14,30 C 17,32 27,32 30,30" stroke="var(--piece-detail)" stroke-width="1.2" />
+  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M11 38c0-1.5 1-3 3.5-3.5h15c2.5.5 3.5 2 3.5 3.5H11z" fill="var(--piece-stroke)"/>
+    <path d="M14.5 34.5c0-4.5 1.5-8 3.5-11h8c2 3 3.5 6.5 3.5 11H14.5z" fill="var(--piece-fill)"/>
+    <path d="M15 23.5c-1-5 2-6.5 7-6.5s8 1.5 7 6.5H15z" fill="var(--piece-fill)"/>
+    <path d="M22 17V8M19.5 11.5h5" stroke="var(--piece-stroke)" stroke-width="2.2"/>
+    <circle cx="22" cy="17" r="2.2" fill="var(--piece-detail)" stroke="none"/>
   </g>`
 };
 
