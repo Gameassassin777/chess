@@ -1308,7 +1308,9 @@ class ChessApp {
 
   // Refresh Screen elements without redrawing everything
   refreshGameScreen() {
-    this.renderScreen("game");
+    if (this.activeScreen === "game") {
+      this.renderScreen("game");
+    }
   }
 
   buildFloatingSettingsButton() {
@@ -2154,7 +2156,8 @@ class ChessApp {
       const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
       const paths = theme[pType.toUpperCase()];
       if (paths) {
-        html += `<svg viewBox="0 0 44 44" class="piece color-${capturedColor}" style="width:16px; height:16px; filter:drop-shadow(0 1px 1px rgba(0,0,0,0.4));">${paths}</svg>`;
+        const viewBox = theme.viewBox || "0 0 44 44";
+        html += `<svg viewBox="${viewBox}" class="piece color-${capturedColor}" style="width:16px; height:16px; filter:drop-shadow(0 1px 1px rgba(0,0,0,0.4));">${paths}</svg>`;
       }
     });
     html += `</div>`;

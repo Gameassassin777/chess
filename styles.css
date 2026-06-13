@@ -600,7 +600,7 @@ html {
   flex: 1;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) or (orientation: landscape) {
   .lobby-panels {
     grid-template-columns: 1.2fr 1fr;
   }
@@ -1529,4 +1529,127 @@ body.mode-dark .theme-preview-box {
   width: 76%;
   height: 76%;
   display: block;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   8. RESPONSIVE LANDSCAPE ORIENTATION OVERRIDES
+   ────────────────────────────────────────────────────────────────────────── */
+@media (orientation: landscape) {
+  /* Home Screen Overrides */
+  .home-container {
+    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .brand-section {
+    margin-bottom: 0;
+  }
+
+  .brand-section h1 {
+    font-size: 2.2rem;
+  }
+
+  .brand-section p {
+    font-size: 0.8rem;
+  }
+
+  .variant-selector {
+    max-width: 860px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .variant-card {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    gap: 4px;
+  }
+
+  .variant-title {
+    font-size: 1rem;
+  }
+
+  .variant-desc {
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+
+  /* Lobby Screen Overrides */
+  .lobby-container {
+    padding: 16px 24px;
+    padding-top: calc(16px + env(safe-area-inset-top));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .lobby-headline {
+    margin-bottom: 12px;
+  }
+
+  /* Game Screen Overrides */
+  .game-container {
+    padding-top: calc(4px + env(safe-area-inset-top));
+    padding-bottom: calc(4px + env(safe-area-inset-bottom));
+  }
+
+  .game-workspace {
+    display: grid;
+    grid-template-columns: auto minmax(260px, 320px);
+    grid-auto-rows: min-content;
+    column-gap: 24px;
+    row-gap: 8px;
+    align-content: center;
+    justify-content: center;
+    padding: 6px 24px;
+    height: calc(100vh - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    overflow-y: hidden;
+  }
+
+  .board-wrapper {
+    grid-column: 1;
+    grid-row: 1 / span 12;
+    align-self: center;
+    justify-self: center;
+    max-width: min(85vw, 75vh, 440px) !important;
+    margin: 0 !important;
+  }
+
+  /* Sidebar items in game workspace */
+  .game-workspace > :not(.board-wrapper):not(.partner-board-preview) {
+    grid-column: 2;
+  }
+
+  .player-tag {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 6px 10px !important;
+  }
+
+  .player-info {
+    font-size: 0.85rem !important;
+  }
+
+  .player-timer {
+    font-size: 0.9rem !important;
+    padding: 3px 8px !important;
+  }
+
+  .reserve-bar {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 4px 10px !important;
+    gap: 8px !important;
+  }
+
+  .partner-board-preview {
+    grid-column: 2;
+    position: static;
+    width: 80px;
+    height: 80px;
+    margin: 4px auto !important;
+    box-shadow: var(--shadow-premium);
+  }
 }
