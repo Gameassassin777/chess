@@ -671,7 +671,10 @@ class ChessApp {
 
   buildGameScreen() {
     const root = document.createElement("div");
-    root.className = "game-container fade-in";
+    // Only play the entrance animation when first opening the game screen.
+    // In-place refreshes (every move) must not replay it, or the whole board
+    // visibly flashes/scales on each update.
+    root.className = "game-container" + (this._suppressGameFade ? "" : " fade-in");
 
     // 1. Header Bar
     const header = document.createElement("div");
@@ -1092,27 +1095,24 @@ class ChessApp {
     // Rotation indices: Red (0), Blue (1), Yellow (2), Green (3)
     const rotationIndex = this.playerIndex === -1 ? 0 : this.playerIndex;
 
+    // Map each on-screen cell (r = row from top, c = col from left) to a board
+    // coordinate, rotating the board so the local player's army is always at
+    // the bottom: Red 0°, Blue 90°, Yellow 180°, Green 270°.
     for (let r = 0; r < 14; r++) {
-      let row = 13 - r;
-      if (rotationIndex === 1) row = r;
-      if (rotationIndex === 2) row = r;
-      if (rotationIndex === 3) row = 13 - r;
-
       for (let c = 0; c < 14; c++) {
-        let col = c;
-        if (rotationIndex === 1) col = 13 - c;
-        if (rotationIndex === 2) col = 13 - c;
-        if (rotationIndex === 3) col = c;
-
-        // Perform rotation coordinates swap for Blue/Green
-        let displayRow = row;
-        let displayCol = col;
-        if (rotationIndex === 1) { // Blue
+        let displayRow, displayCol;
+        if (rotationIndex === 1) {        // Blue — left edge to the bottom
           displayRow = c;
-          displayCol = r;
-        } else if (rotationIndex === 3) { // Green
-          displayRow = 13 - c;
           displayCol = 13 - r;
+        } else if (rotationIndex === 2) { // Yellow — top edge to the bottom
+          displayRow = r;
+          displayCol = 13 - c;
+        } else if (rotationIndex === 3) { // Green — right edge to the bottom
+          displayRow = 13 - c;
+          displayCol = r;
+        } else {                          // Red — already at the bottom
+          displayRow = 13 - r;
+          displayCol = c;
         }
 
         const square = board[displayRow][displayCol];
@@ -1373,7 +1373,9 @@ class ChessApp {
   // Refresh Screen elements without redrawing everything
   refreshGameScreen() {
     if (this.activeScreen === "game") {
+      this._suppressGameFade = true;
       this.renderScreen("game");
+      this._suppressGameFade = false;
     }
   }
 
