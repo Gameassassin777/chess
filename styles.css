@@ -1660,9 +1660,8 @@ body.mode-dark .theme-preview-box {
 .piece-sprite {
   width: 90%;
   height: 90%;
-  background-image: url('assets/holo_pieces.png');
-  background-size: 600% 600%;
-  background-position-y: 50%;
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
   display: block;
   z-index: 5;
@@ -1679,18 +1678,6 @@ body.mode-dark .theme-preview-box {
 .preview-cell .piece-sprite {
   width: 76%;
   height: 76%;
-}
-
-/* Map horizontal chess piece indices: pawn(0), knight(1), bishop(2), rook(3), queen(4), king(5) */
-.piece-sprite.piece-p { --piece-index: 0; }
-.piece-sprite.piece-n { --piece-index: 1; }
-.piece-sprite.piece-b { --piece-index: 2; }
-.piece-sprite.piece-r { --piece-index: 3; }
-.piece-sprite.piece-q { --piece-index: 4; }
-.piece-sprite.piece-k { --piece-index: 5; }
-
-.piece-sprite {
-  background-position-x: calc(var(--piece-index) * 20%);
 }
 
 /* Colorshift CSS filters for each player color (Base is Cyan) */

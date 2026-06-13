@@ -1137,7 +1137,7 @@ class ChessApp {
   getPieceVector(type, colorClass) {
     const symbol = type.toUpperCase();
     if (this.piecesTheme === "holo") {
-      return `<div class="piece-sprite color-${colorClass} piece-${type.toLowerCase()}"></div>`;
+      return `<div class="piece-sprite color-${colorClass} piece-${type.toLowerCase()}" style="background-image: url('assets/pieces/holo/${type.toLowerCase()}.png');"></div>`;
     }
     const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
     const paths = theme[symbol];
@@ -2158,7 +2158,7 @@ class ChessApp {
     let html = `<div class="captured-pieces-list" style="display:flex; flex-wrap:wrap; gap:2px; margin-top:2px; opacity:0.8;">`;
     list.forEach(pType => {
       if (this.piecesTheme === "holo") {
-        html += `<div class="piece-sprite color-${capturedColor} piece-${pType.toLowerCase()}" style="width:16px; height:16px; flex-shrink:0;"></div>`;
+        html += `<div class="piece-sprite color-${capturedColor} piece-${pType.toLowerCase()}" style="width:16px; height:16px; flex-shrink:0; background-image: url('assets/pieces/holo/${pType.toLowerCase()}.png');"></div>`;
       } else {
         const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
         const paths = theme[pType.toUpperCase()];

@@ -1,4 +1,4 @@
-const CACHE_NAME = "nexus-chess-v7";
+const CACHE_NAME = "nexus-chess-v8";
 const ASSETS = [
   "./",
   "./index.html",
@@ -9,7 +9,12 @@ const ASSETS = [
   "./manifest.json",
   "./apple-touch-icon.png",
   "./icon-512.png",
-  "./assets/holo_pieces.png"
+  "./assets/pieces/holo/p.png",
+  "./assets/pieces/holo/n.png",
+  "./assets/pieces/holo/b.png",
+  "./assets/pieces/holo/r.png",
+  "./assets/pieces/holo/q.png",
+  "./assets/pieces/holo/k.png"
 ];
 
 // Install Event
