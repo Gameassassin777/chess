@@ -1344,6 +1344,11 @@ class ChessApp {
         <button class="modal-close-btn" id="customizer-close-btn"></button>
       </div>
 
+      <!-- Theme Preview Area -->
+      <div class="theme-preview-box">
+        <div id="theme-preview-board-container"></div>
+      </div>
+
       <div class="settings-group" style="margin-bottom: 16px;">
         <label class="settings-label">App Appearance</label>
         <div class="theme-options-grid">
@@ -1375,6 +1380,9 @@ class ChessApp {
     `;
 
     setTimeout(() => {
+      // Draw the initial preview board
+      this.updateThemePreview();
+
       const close = drawer.querySelector("#customizer-close-btn");
       if (close) {
         close.appendChild(this.buildCloseSvg());
@@ -1388,6 +1396,7 @@ class ChessApp {
           document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
           drawer.querySelectorAll("[data-mode]").forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
+          this.updateThemePreview();
         });
       });
 
@@ -1398,6 +1407,7 @@ class ChessApp {
           document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
           drawer.querySelectorAll("[data-theme]").forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
+          this.updateThemePreview();
         });
       });
 
@@ -1408,6 +1418,7 @@ class ChessApp {
           document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
           drawer.querySelectorAll("[data-piece]").forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
+          this.updateThemePreview();
           // Re-render the game screen to load new piece vectors
           this.refreshGameScreen();
         });
@@ -1418,6 +1429,38 @@ class ChessApp {
     frag.appendChild(backdrop);
     frag.appendChild(drawer);
     return frag;
+  }
+
+  updateThemePreview() {
+    const container = document.getElementById("theme-preview-board-container");
+    if (container) {
+      container.innerHTML = "";
+      container.appendChild(this.buildThemePreviewBoard());
+    }
+  }
+
+  buildThemePreviewBoard() {
+    const board = document.createElement("div");
+    board.className = "mini-preview-board";
+
+    // 3x3 layout
+    const cells = [
+      [ { color: 'dark', piece: 'K', side: 'white' }, { color: 'light' }, { color: 'dark' } ],
+      [ { color: 'light' }, { color: 'dark', piece: 'N', side: 'black' }, { color: 'light' } ],
+      [ { color: 'dark' }, { color: 'light' }, { color: 'dark', piece: 'P', side: 'white' } ]
+    ];
+    
+    cells.forEach((rowCells) => {
+      rowCells.forEach((cellInfo) => {
+        const cell = document.createElement("div");
+        cell.className = `preview-cell ${cellInfo.color}`;
+        if (cellInfo.piece) {
+          cell.innerHTML = this.getPieceVector(cellInfo.piece, cellInfo.side);
+        }
+        board.appendChild(cell);
+      });
+    });
+    return board;
   }
 
   toggleCustomizer(show) {
