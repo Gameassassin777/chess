@@ -211,16 +211,17 @@ export class ChessRoom {
     const variant = url.searchParams.get("variant") || "standard";
     const type = url.pathname.includes("create") ? "create" : "join";
     let requestedRole = url.searchParams.get("role") || "player";
+    let requestedIndex = parseInt(url.searchParams.get("index") || "-1");
 
     this.variant = variant;
 
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
-    await this.handleSession(server, code, name, variant, type, requestedRole);
+    await this.handleSession(server, code, name, variant, type, requestedRole, requestedIndex);
     return new Response(null, { status: 101, webSocket: client });
   }
 
-  async handleSession(ws, code, name, variant, type, requestedRole) {
+  async handleSession(ws, code, name, variant, type, requestedRole, requestedIndex) {
     ws.accept();
 
     // Max players checks
@@ -235,25 +236,36 @@ export class ChessRoom {
     });
 
     let assignedRole = requestedRole;
-    if (assignedRole === "player" && currentPlayerCount >= playerLimit) {
+    if (assignedRole === "player" && currentPlayerCount >= playerLimit * 2) {
       assignedRole = "spectator"; // Force spectator if full
     }
 
     // Assign a player index if player role
     let playerIndex = -1;
     if (assignedRole === "player") {
-      // Find the first free index (0 to playerLimit - 1)
-      const occupiedIndices = new Set();
-      this.sessions.forEach(s => {
-        if (s.role === "player" && s.index !== -1) {
-          occupiedIndices.add(s.index);
+      let occupants = 0;
+      if (requestedIndex >= 0 && requestedIndex < playerLimit) {
+        this.sessions.forEach(s => {
+          if (s.role === "player" && s.index === requestedIndex) occupants++;
+        });
+      }
+      if (requestedIndex >= 0 && requestedIndex < playerLimit && occupants < 2) {
+        playerIndex = requestedIndex;
+      } else {
+        // Find the first free index
+        for (let i = 0; i < playerLimit; i++) {
+          let count = 0;
+          this.sessions.forEach(s => {
+            if (s.role === "player" && s.index === i) count++;
+          });
+          if (count < 2) {
+            playerIndex = i;
+            break;
+          }
         }
-      });
-      for (let i = 0; i < playerLimit; i++) {
-        if (!occupiedIndices.has(i)) {
-          playerIndex = i;
-          break;
-        }
+      }
+      if (playerIndex === -1) {
+        assignedRole = "spectator";
       }
     }
 
@@ -285,7 +297,57 @@ export class ChessRoom {
       try {
         const data = JSON.parse(msg.data);
 
-        // Relays are messages passed through to everyone else
+        // 1. Claim Slot index (Co-op slots)
+        if (data.type === "claim_slot") {
+          const session = this.sessions.get(ws);
+          const targetIndex = parseInt(data.index);
+          
+          let occupants = 0;
+          this.sessions.forEach(s => {
+            if (s.role === "player" && s.index === targetIndex) {
+              occupants++;
+            }
+          });
+
+          if (targetIndex >= 0 && targetIndex < playerLimit && occupants < 2) {
+            session.role = "player";
+            session.index = targetIndex;
+            this.broadcastClientList();
+            
+            ws.send(JSON.stringify({
+              type: "connected",
+              code,
+              role: "player",
+              index: targetIndex,
+              variant
+            }));
+          } else {
+            ws.send(JSON.stringify({
+              type: "toast",
+              message: "Slot is full! Max 2 players per slot."
+            }));
+          }
+          return;
+        }
+
+        // 2. Claim Spectator role
+        if (data.type === "claim_spectator") {
+          const session = this.sessions.get(ws);
+          session.role = "spectator";
+          session.index = -1;
+          this.broadcastClientList();
+          
+          ws.send(JSON.stringify({
+            type: "connected",
+            code,
+            role: "spectator",
+            index: -1,
+            variant
+          }));
+          return;
+        }
+
+        // 3. Relays are messages passed through to everyone else
         if (data.type === "relay") {
           const session = this.sessions.get(ws);
           
@@ -299,6 +361,7 @@ export class ChessRoom {
             data.action.type === "state_update" || 
             data.action.type === "start_game" || 
             data.action.type === "move" ||
+            data.action.type === "drop" ||
             data.action.type === "lobby_sync"
           )) {
             this.lastState = data.action;

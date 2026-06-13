@@ -24,6 +24,10 @@ class ChessApp {
     this.legalMoves = [];
     this.lastMoveSquares = []; // [{row, col}, {row, col}]
 
+    // Co-play move suggestion states
+    this.activeSuggestion = null;
+    this.partnerSuggestion = null;
+
     // Bughouse specific board IDs mapping
     this.myBoardId = "board1";
     this.partnerBoardId = "board2";
@@ -50,16 +54,32 @@ class ChessApp {
     // Inject global stylesheet selectors for themes
     document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme}`;
 
-    // Clear initial loader and load screen
-    this.renderScreen("home");
+    // Read room code from URL hash if present on load
+    const hash = window.location.hash.replace("#", "").trim().toUpperCase();
+    if (hash.length === 4) {
+      this.role = "player";
+      this.joinRoom(hash);
+    } else {
+      // Clear initial loader and load screen
+      this.renderScreen("home");
+    }
+
+    // Hash change event listener to join rooms directly
+    window.addEventListener("hashchange", () => {
+      const code = window.location.hash.replace("#", "").trim().toUpperCase();
+      if (code.length === 4 && code !== this.roomCode) {
+        this.role = "player";
+        this.joinRoom(code);
+      }
+    });
     
     // Periodic heartbeat to keep public list accurate if hosting
     setInterval(() => this.sendHeartbeat(), 8000);
 
-    // Auto-reconnect if page refreshed in active game
-    const cachedCode = sessionStorage.getItem("active_room_code");
-    const cachedName = sessionStorage.getItem("active_room_name");
-    const cachedRole = sessionStorage.getItem("active_room_role");
+    // Auto-reconnect if page refreshed in active game (using robust localStorage)
+    const cachedCode = localStorage.getItem("active_room_code");
+    const cachedName = localStorage.getItem("active_room_name");
+    const cachedRole = localStorage.getItem("active_room_role");
     if (cachedCode && cachedName) {
       this.username = cachedName;
       this.role = cachedRole || "player";
@@ -239,44 +259,106 @@ class ChessApp {
     // Max players limit check
     const maxPlayers = (this.variant === "standard") ? 2 : 4;
     
-    // Sort clients: players first, then spectators
-    const sortedClients = [...this.clients].sort((a, b) => {
-      if (a.role === b.role) return a.index - b.index;
-      return a.role === "player" ? -1 : 1;
-    });
-
-    sortedClients.forEach((client) => {
+    for (let i = 0; i < maxPlayers; i++) {
+      const slotPlayers = this.clients.filter(c => c.role === "player" && c.index === i);
+      const slotName = this.variant === "4player" 
+        ? this.get4PlayerColorName(i) 
+        : (this.variant === "bughouse" ? this.getBughouseColorName(i) : (i === 0 ? "White" : "Black"));
+      
       const row = document.createElement("div");
       row.className = "lobby-player-row";
+      row.style.display = "flex";
+      row.style.justifyContent = "space-between";
+      row.style.alignItems = "center";
+      row.style.padding = "10px 14px";
+      row.style.borderRadius = "8px";
+      row.style.background = "rgba(255, 255, 255, 0.02)";
+      row.style.border = "1px solid rgba(255, 255, 255, 0.04)";
 
-      const id = document.createElement("div");
-      id.className = "player-identity";
+      const identity = document.createElement("div");
+      identity.className = "player-identity";
+      identity.style.display = "flex";
+      identity.style.alignItems = "center";
+      identity.style.gap = "8px";
 
-      if (client.role === "player") {
-        const dot = document.createElement("span");
-        dot.className = `player-index-indicator player-index-${this.variant === "4player" ? this.get4PlayerColorName(client.index) : (this.variant === "bughouse" ? this.getBughouseColorName(client.index) : client.index)}`;
-        id.appendChild(dot);
+      const dot = document.createElement("span");
+      dot.className = `player-index-indicator player-index-${this.variant === "4player" ? this.get4PlayerColorName(i) : (this.variant === "bughouse" ? this.getBughouseColorName(i) : i)}`;
+      identity.appendChild(dot);
+
+      const slotLabel = document.createElement("span");
+      slotLabel.textContent = slotName.toUpperCase() + ": ";
+      slotLabel.style.color = "var(--text-muted)";
+      slotLabel.style.fontSize = "0.8rem";
+      slotLabel.style.fontWeight = "800";
+      identity.appendChild(slotLabel);
+
+      if (slotPlayers.length === 0) {
+        const text = document.createElement("span");
+        text.textContent = "Empty";
+        text.style.fontStyle = "italic";
+        text.style.color = "var(--text-muted)";
+        identity.appendChild(text);
+        row.appendChild(identity);
+
+        if (this.playerIndex !== i) {
+          const btn = document.createElement("button");
+          btn.className = "btn-premium btn-secondary btn-sm";
+          btn.textContent = "Claim";
+          btn.addEventListener("click", () => this.sendClaimSlot(i));
+          row.appendChild(btn);
+        }
+      } else {
+        const namesContainer = document.createElement("div");
+        namesContainer.style.display = "flex";
+        namesContainer.style.flexDirection = "column";
+        namesContainer.style.gap = "2px";
+        
+        slotPlayers.forEach((p, pIdx) => {
+          const nameSpan = document.createElement("span");
+          nameSpan.textContent = p.name + (p.name === this.username ? " (You)" : "") + (pIdx > 0 ? " [Partner]" : "");
+          nameSpan.style.fontWeight = "600";
+          namesContainer.appendChild(nameSpan);
+        });
+        identity.appendChild(namesContainer);
+        row.appendChild(identity);
+
+        const isAlreadyInThisSlot = slotPlayers.some(p => p.name === this.username);
+        if (slotPlayers.length === 1 && !isAlreadyInThisSlot) {
+          const btn = document.createElement("button");
+          btn.className = "btn-premium btn-primary btn-sm";
+          btn.textContent = "+ Co-Play";
+          btn.addEventListener("click", () => this.sendClaimSlot(i));
+          row.appendChild(btn);
+        }
       }
-
-      const nameSpan = document.createElement("span");
-      nameSpan.textContent = client.name + (client.name === this.username ? " (You)" : "");
-      nameSpan.style.fontWeight = "600";
-      id.appendChild(nameSpan);
-      row.appendChild(id);
-
-      const roleBadge = document.createElement("span");
-      roleBadge.className = `player-role-badge role-${client.role}`;
-      roleBadge.textContent = client.role === "player" ? (this.variant === "4player" ? this.get4PlayerColorName(client.index) : (this.variant === "bughouse" ? this.getBughouseColorName(client.index) : `Player ${client.index + 1}`)) : "Spectator";
-      row.appendChild(roleBadge);
-
       playerList.appendChild(row);
-    });
-
-    if (this.clients.length === 0) {
-      playerList.innerHTML = `<div class="lobby-empty">Waiting for connections...</div>`;
     }
 
     playerPanel.appendChild(playerList);
+
+    const spectators = this.clients.filter(c => c.role === "spectator");
+    if (spectators.length > 0) {
+      const specHeader = document.createElement("div");
+      specHeader.className = "panel-header";
+      specHeader.style.marginTop = "16px";
+      specHeader.textContent = "Spectators";
+      playerPanel.appendChild(specHeader);
+
+      const specList = document.createElement("div");
+      specList.style.display = "flex";
+      specList.style.flexWrap = "wrap";
+      specList.style.gap = "8px";
+      specList.style.padding = "10px 0";
+
+      spectators.forEach(s => {
+        const span = document.createElement("span");
+        span.className = "player-role-badge role-spectator";
+        span.textContent = s.name + (s.name === this.username ? " (You)" : "");
+        specList.appendChild(span);
+      });
+      playerPanel.appendChild(specList);
+    }
+
     panels.appendChild(playerPanel);
 
     // Panel 2: Lobby Host Settings
@@ -362,13 +444,18 @@ class ChessApp {
     const footer = document.createElement("div");
     footer.className = "lobby-actions-footer";
 
-    const readyCount = this.clients.filter(c => c.role === "player").length;
+    // Determine if all slots have at least one player to enable start
+    let allSlotsFilled = true;
+    for (let i = 0; i < maxPlayers; i++) {
+      const occupants = this.clients.filter(c => c.role === "player" && c.index === i).length;
+      if (occupants === 0) allSlotsFilled = false;
+    }
 
     if (isHost) {
       const startBtn = document.createElement("button");
       startBtn.className = "btn-premium btn-primary";
-      startBtn.textContent = `Start Game (${readyCount}/${maxPlayers})`;
-      startBtn.disabled = readyCount < maxPlayers;
+      startBtn.textContent = `Start Game`;
+      startBtn.disabled = !allSlotsFilled;
       startBtn.addEventListener("click", () => this.sendStartGame());
       footer.appendChild(startBtn);
     } else {
@@ -377,8 +464,22 @@ class ChessApp {
       waitMsg.style.color = "var(--text-muted)";
       waitMsg.style.fontSize = "0.9rem";
       waitMsg.style.padding = "10px";
-      waitMsg.textContent = `Waiting for Host to start (${readyCount}/${maxPlayers} players joined)...`;
+      waitMsg.textContent = allSlotsFilled 
+        ? "Waiting for Host to press Start Game..." 
+        : `Waiting for all slots to be filled...`;
       footer.appendChild(waitMsg);
+    }
+
+    if (this.role === "player") {
+      const specBtn = document.createElement("button");
+      specBtn.className = "btn-premium btn-secondary";
+      specBtn.textContent = "Become Spectator";
+      specBtn.addEventListener("click", () => {
+        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+          this.socket.send(JSON.stringify({ type: "claim_spectator" }));
+        }
+      });
+      footer.appendChild(specBtn);
     }
 
     const leaveBtn = document.createElement("button");
@@ -453,9 +554,12 @@ class ChessApp {
       const oppTag = document.createElement("div");
       oppTag.className = `player-tag ${turnColor === oppColor ? "active" : ""}`;
       oppTag.innerHTML = `
-        <div class="player-info">
-          <span class="player-index-indicator player-index-${oppIndex}"></span>
-          <span>${oppName}</span>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div class="player-info">
+            <span class="player-index-indicator player-index-${oppIndex}"></span>
+            <span>${oppName}</span>
+          </div>
+          ${this.renderCapturedPiecesList(oppColor)}
         </div>
         <div class="player-timer" id="timer-${oppColor}">00:00</div>
       `;
@@ -482,9 +586,12 @@ class ChessApp {
         tag.className = `player-tag ${turnColor === col ? "active" : ""}`;
         tag.style.margin = "0";
         tag.innerHTML = `
-          <div class="player-info" style="font-size: 0.8rem;">
-            <span class="player-index-indicator player-index-${col}"></span>
-            <span>${name}</span>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div class="player-info" style="font-size: 0.8rem;">
+              <span class="player-index-indicator player-index-${col}"></span>
+              <span>${name}</span>
+            </div>
+            ${this.renderCapturedPiecesList(col)}
           </div>
           <div class="player-timer" id="timer-${col}" style="font-size:0.85rem; padding: 2px 6px;">00:00</div>
         `;
@@ -636,15 +743,24 @@ class ChessApp {
       workspace.appendChild(partnerPreview);
     }
 
+    // Suggestion Panel (Co-play)
+    const sugPanel = this.buildSuggestionPanel();
+    if (sugPanel) {
+      workspace.appendChild(sugPanel);
+    }
+
     // Self Player Tag (Standard Chess)
     if (this.variant === "standard" && this.playerIndex !== -1) {
       const myColor = this.playerIndex === 0 ? "white" : "black";
       const selfTag = document.createElement("div");
       selfTag.className = `player-tag ${turnColor === myColor ? "active" : ""}`;
       selfTag.innerHTML = `
-        <div class="player-info">
-          <span class="player-index-indicator player-index-${this.playerIndex}"></span>
-          <span>${this.username} (You)</span>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div class="player-info">
+            <span class="player-index-indicator player-index-${this.playerIndex}"></span>
+            <span>${this.username} (You)</span>
+          </div>
+          ${this.renderCapturedPiecesList(myColor)}
         </div>
         <div class="player-timer" id="timer-${myColor}">00:00</div>
       `;
@@ -657,9 +773,12 @@ class ChessApp {
       const selfTag = document.createElement("div");
       selfTag.className = `player-tag ${turnColor === myColor ? "active" : ""}`;
       selfTag.innerHTML = `
-        <div class="player-info">
-          <span class="player-index-indicator player-index-${myColor}"></span>
-          <span>${this.username} (You)</span>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div class="player-info">
+            <span class="player-index-indicator player-index-${myColor}"></span>
+            <span>${this.username} (You)</span>
+          </div>
+          ${this.renderCapturedPiecesList(myColor)}
         </div>
         <div class="player-timer" id="timer-${myColor}">00:00</div>
       `;
@@ -719,6 +838,17 @@ class ChessApp {
 
         // Apply highlights
         if (!isMiniMap) {
+          // Suggestion highlighting
+          const activeS = this.partnerSuggestion || this.activeSuggestion;
+          if (activeS && activeS.boardId === boardId) {
+            if (activeS.type === "move" && activeS.fromRow === row && activeS.fromCol === col) {
+              cell.classList.add("suggested-from");
+            }
+            if (activeS.toRow === row && activeS.toCol === col) {
+              cell.classList.add("suggested-to");
+            }
+          }
+
           // Checked King
           if (square && square.type === "k" && this.game.isKingInCheck(square.color, boardId)) {
             cell.classList.add("check-sq");
@@ -825,6 +955,17 @@ class ChessApp {
             cell.innerHTML = this.getPieceVector(square.type, square.color);
           }
 
+          // Suggestion highlighting
+          const activeS = this.partnerSuggestion || this.activeSuggestion;
+          if (activeS && activeS.boardId === "board") {
+            if (activeS.type === "move" && activeS.fromRow === displayRow && activeS.fromCol === displayCol) {
+              cell.classList.add("suggested-from");
+            }
+            if (activeS.toRow === displayRow && activeS.toCol === displayCol) {
+              cell.classList.add("suggested-to");
+            }
+          }
+
           // Checked King highlight
           if (square && square.type === "k" && this.game.isKingInCheck(square.color, "board")) {
             cell.classList.add("check-sq");
@@ -889,6 +1030,75 @@ class ChessApp {
 
   // Handle movements or drops click interaction
   handleCellInteraction(row, col, boardId = "board") {
+    // Intercept if slot is shared (Co-play suggestion flow)
+    if (this.isSlotShared(this.playerIndex)) {
+      if (this.selectedReservePiece) {
+        const pieceType = this.selectedReservePiece;
+        const suggestion = {
+          type: "drop",
+          pieceType,
+          toRow: row,
+          toCol: col,
+          boardId
+        };
+        this.sendRelay({
+          type: "suggest_move",
+          action: suggestion
+        });
+        this.activeSuggestion = suggestion;
+        this.selectedReservePiece = null;
+        this.legalMoves = [];
+        this.refreshGameScreen();
+      } else if (this.selectedCell) {
+        const fromRow = this.selectedCell.row;
+        const fromCol = this.selectedCell.col;
+        const boardArr = this.game.getBoardArray(boardId);
+        const piece = boardArr[fromRow][fromCol];
+
+        // Promotion check
+        let isPromotion = false;
+        if (piece && piece.type === "p") {
+          if (this.variant === "4player") {
+            const step = this.mode === "teams" ? 11 : 8;
+            if (piece.color === "red" && row === step - 1) isPromotion = true;
+            if (piece.color === "yellow" && row === 14 - step) isPromotion = true;
+            if (piece.color === "blue" && col === step - 1) isPromotion = true;
+            if (piece.color === "green" && col === 14 - step) isPromotion = true;
+          } else {
+            const promoRank = piece.color === "white" ? 7 : 0;
+            if (row === promoRank) isPromotion = true;
+          }
+        }
+
+        let promoChoice = "q";
+        if (isPromotion) {
+          const choice = prompt("Promote to: Q (Queen), R (Rook), B (Bishop), or N (Knight)?", "Q");
+          if (choice && ["r", "n", "b", "q"].includes(choice.toLowerCase())) {
+            promoChoice = choice.toLowerCase();
+          }
+        }
+
+        const suggestion = {
+          type: "move",
+          fromRow,
+          fromCol,
+          toRow: row,
+          toCol: col,
+          promoChoice,
+          boardId
+        };
+        this.sendRelay({
+          type: "suggest_move",
+          action: suggestion
+        });
+        this.activeSuggestion = suggestion;
+        this.selectedCell = null;
+        this.legalMoves = [];
+        this.refreshGameScreen();
+      }
+      return;
+    }
+
     if (this.selectedReservePiece) {
       // Execute Drop Move (Bughouse)
       const pieceType = this.selectedReservePiece;
@@ -1089,7 +1299,7 @@ class ChessApp {
     this.roomCode = code.toUpperCase();
     this.role = spectate ? "spectator" : "player";
 
-    this.socket = new WebSocket(`${WS_BASE}/ws/join?code=${this.roomCode}&name=${encodeURIComponent(this.username)}&role=${this.role}`);
+    this.socket = new WebSocket(`${WS_BASE}/ws/join?code=${this.roomCode}&name=${encodeURIComponent(this.username)}&role=${this.role}&index=${this.playerIndex}`);
     this.setupSocketHandlers();
   }
 
@@ -1107,9 +1317,12 @@ class ChessApp {
           this.role = msg.role;
           this.playerIndex = msg.index;
           
-          sessionStorage.setItem("active_room_code", this.roomCode);
-          sessionStorage.setItem("active_room_name", this.username);
-          sessionStorage.setItem("active_room_role", this.role);
+          localStorage.setItem("active_room_code", this.roomCode);
+          localStorage.setItem("active_room_name", this.username);
+          localStorage.setItem("active_room_role", this.role);
+
+          // Update URL hash to make sharing simple
+          window.location.hash = this.roomCode;
 
           // Configure Bughouse Board assignments
           if (this.variant === "bughouse") {
@@ -1236,6 +1449,24 @@ class ChessApp {
     else if (action.type === "resign") {
       this.handleResignation(action.color, sender);
     }
+
+    else if (action.type === "suggest_move") {
+      if (senderIndex === this.playerIndex) {
+        this.partnerSuggestion = action.action;
+        if (this.partnerSuggestion) {
+          this.partnerSuggestion.sender = sender;
+        }
+        this.refreshGameScreen();
+      }
+    }
+
+    else if (action.type === "clear_suggestion") {
+      if (senderIndex === this.playerIndex) {
+        this.partnerSuggestion = null;
+        this.activeSuggestion = null;
+        this.refreshGameScreen();
+      }
+    }
   }
 
   // Broadcaster helper for WebSocket
@@ -1287,9 +1518,12 @@ class ChessApp {
       this.socket.close();
     }
 
-    sessionStorage.removeItem("active_room_code");
-    sessionStorage.removeItem("active_room_name");
-    sessionStorage.removeItem("active_room_role");
+    localStorage.removeItem("active_room_code");
+    localStorage.removeItem("active_room_name");
+    localStorage.removeItem("active_room_role");
+
+    // Clean hash from URL bar
+    history.pushState("", document.title, window.location.pathname + window.location.search);
 
     this.roomCode = null;
     this.playerIndex = -1;
@@ -1513,6 +1747,8 @@ class ChessApp {
 
   // Sync settings changes across clients (lobby phase)
   syncLobbySettings() {
+    localStorage.setItem("chess_time_limit", this.timeLimitMinutes);
+    localStorage.setItem("chess_time_increment", this.timeIncrementSeconds);
     this.sendRelay({
       type: "lobby_sync",
       timeLimitMinutes: this.timeLimitMinutes,
@@ -1663,6 +1899,221 @@ class ChessApp {
     this.toastTimeout = setTimeout(() => {
       container.classList.remove("show");
     }, 2500);
+  }
+
+  // Claim specific slot index in lobby
+  sendClaimSlot(index) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify({
+        type: "claim_slot",
+        index: index
+      }));
+    }
+  }
+
+  // Check if a player index has co-players sharing the slot
+  isSlotShared(index) {
+    if (index === -1) return false;
+    const occupants = this.clients.filter(c => c.role === "player" && c.index === index);
+    return occupants.length > 1;
+  }
+
+  // Get captured pieces of a given color
+  getCapturedPieces(color) {
+    const startSet = { p: 8, r: 2, n: 2, b: 2, q: 1 };
+    const currentCounts = { p: 0, r: 0, n: 0, b: 0, q: 0 };
+    
+    // Scan board
+    const board = this.game.board;
+    const size = this.variant === "4player" ? 14 : 8;
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        const sq = board[r][c];
+        if (sq && sq.color === color) {
+          const type = sq.type.toLowerCase();
+          if (currentCounts[type] !== undefined) {
+            currentCounts[type]++;
+          }
+        }
+      }
+    }
+    
+    // Subtract to find captured
+    const captured = [];
+    Object.entries(startSet).forEach(([type, count]) => {
+      const diff = count - currentCounts[type];
+      for (let i = 0; i < diff; i++) {
+        captured.push(type);
+      }
+    });
+    return captured;
+  }
+
+  // Render list of captured pieces next to names in profile tags
+  renderCapturedPiecesList(capturedColor) {
+    const list = this.getCapturedPieces(capturedColor);
+    if (list.length === 0) return "";
+    
+    let html = `<div class="captured-pieces-list" style="display:flex; flex-wrap:wrap; gap:2px; margin-top:2px; opacity:0.8;">`;
+    list.forEach(pType => {
+      const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
+      const paths = theme[pType.toUpperCase()];
+      if (paths) {
+        html += `<svg viewBox="0 0 44 44" class="piece color-${capturedColor}" style="width:16px; height:16px; filter:drop-shadow(0 1px 1px rgba(0,0,0,0.4));">${paths}</svg>`;
+      }
+    });
+    html += `</div>`;
+    return html;
+  }
+
+  // Build the co-play suggestion banner panel
+  buildSuggestionPanel() {
+    if (!this.activeSuggestion && !this.partnerSuggestion) return null;
+
+    const panel = document.createElement("div");
+    panel.className = "glass-panel fade-in";
+    panel.style.width = "100%";
+    panel.style.maxWidth = "440px";
+    panel.style.margin = "6px 0";
+    panel.style.padding = "10px 14px";
+    panel.style.display = "flex";
+    panel.style.justifyContent = "space-between";
+    panel.style.alignItems = "center";
+    panel.style.border = "1px solid var(--accent-neon)";
+    panel.style.boxShadow = "0 0 15px rgba(0, 242, 254, 0.15)";
+    panel.style.borderRadius = "10px";
+
+    const label = document.createElement("span");
+    label.style.fontSize = "0.85rem";
+    label.style.fontWeight = "600";
+
+    const btnContainer = document.createElement("div");
+    btnContainer.style.display = "flex";
+    btnContainer.style.gap = "8px";
+
+    if (this.activeSuggestion) {
+      const moveStr = this.getSuggestionString(this.activeSuggestion);
+      label.innerHTML = `<span style="color:var(--accent-neon); font-weight:800;">Suggested:</span> ${moveStr}`;
+      
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "btn-premium btn-secondary btn-sm";
+      cancelBtn.textContent = "Cancel";
+      cancelBtn.style.padding = "6px 12px";
+      cancelBtn.addEventListener("click", () => {
+        this.sendRelay({ type: "clear_suggestion" });
+        this.activeSuggestion = null;
+        this.partnerSuggestion = null;
+        this.refreshGameScreen();
+      });
+      btnContainer.appendChild(cancelBtn);
+    } 
+    
+    else if (this.partnerSuggestion) {
+      const moveStr = this.getSuggestionString(this.partnerSuggestion);
+      label.innerHTML = `<span style="color:var(--accent-purple); font-weight:800;">${this.partnerSuggestion.sender || "Partner"} suggests:</span> ${moveStr}`;
+
+      const agreeBtn = document.createElement("button");
+      agreeBtn.className = "btn-premium btn-primary btn-sm";
+      agreeBtn.textContent = "✓ Agree";
+      agreeBtn.style.padding = "6px 12px";
+      agreeBtn.addEventListener("click", () => {
+        this.executeSuggestedMove(this.partnerSuggestion);
+        this.sendRelay({ type: "clear_suggestion" });
+        this.activeSuggestion = null;
+        this.partnerSuggestion = null;
+        this.refreshGameScreen();
+      });
+
+      const disagreeBtn = document.createElement("button");
+      disagreeBtn.className = "btn-premium btn-secondary btn-sm";
+      disagreeBtn.textContent = "✗ Disagree";
+      disagreeBtn.style.padding = "6px 12px";
+      disagreeBtn.addEventListener("click", () => {
+        this.sendRelay({ type: "clear_suggestion" });
+        this.activeSuggestion = null;
+        this.partnerSuggestion = null;
+        this.refreshGameScreen();
+      });
+
+      btnContainer.appendChild(agreeBtn);
+      btnContainer.appendChild(disagreeBtn);
+    }
+
+    panel.appendChild(label);
+    panel.appendChild(btnContainer);
+    return panel;
+  }
+
+  // Format a suggested move into a legible string
+  getSuggestionString(s) {
+    const boardLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
+    if (s.type === "drop") {
+      const pieceName = s.pieceType.toUpperCase();
+      const colLetter = boardLetters[s.toCol];
+      const rowNum = s.boardId === "board2" ? s.toRow + 1 : 8 - s.toRow;
+      return `Drop ${pieceName} @ ${colLetter}${rowNum}`;
+    } else {
+      const colFrom = boardLetters[s.fromCol];
+      const rowFrom = this.variant === "4player" ? s.fromRow + 1 : 8 - s.fromRow;
+      const colTo = boardLetters[s.toCol];
+      const rowTo = this.variant === "4player" ? s.toRow + 1 : 8 - s.toRow;
+      const promo = s.promoChoice && s.promoChoice !== "q" ? `=${s.promoChoice.toUpperCase()}` : "";
+      return `${colFrom}${rowFrom} → ${colTo}${rowTo}${promo}`;
+    }
+  }
+
+  // Execute a suggested move on the board and broadcast
+  executeSuggestedMove(s) {
+    if (s.type === "drop") {
+      this.game.applyDrop(s.pieceType, s.toRow, s.toCol, s.boardId);
+      
+      this.sendRelay({
+        type: "drop",
+        pieceType: s.pieceType,
+        toRow: s.toRow,
+        toCol: s.toCol,
+        boardId: s.boardId,
+        clocks: { ...this.clocks }
+      });
+      
+      this.lastMoveSquares = [{ row: s.toRow, col: s.toCol }];
+      this.checkForLocalGameEnd(s.boardId);
+    } else {
+      this.game.applyMove(s.fromRow, s.fromCol, s.toRow, s.toCol, s.promoChoice, s.boardId);
+      
+      const activeColor = this.game.getTurnColor(s.boardId);
+      if (this.timeLimitMinutes > 0) {
+        if (this.variant === "bughouse") {
+          let pIndex = -1;
+          if (s.boardId === "board1") {
+            pIndex = activeColor === "white" ? 0 : 1;
+          } else {
+            pIndex = activeColor === "black" ? 2 : 3;
+          }
+          if (this.clocks[pIndex] !== undefined) {
+            this.clocks[pIndex] += this.timeIncrementSeconds;
+          }
+        } else {
+          if (this.clocks[activeColor] !== undefined) {
+            this.clocks[activeColor] += this.timeIncrementSeconds;
+          }
+        }
+      }
+
+      this.sendRelay({
+        type: "move",
+        fromRow: s.fromRow,
+        fromCol: s.fromCol,
+        toRow: s.toRow,
+        toCol: s.toCol,
+        promoChoice: s.promoChoice,
+        boardId: s.boardId,
+        clocks: { ...this.clocks }
+      });
+
+      this.lastMoveSquares = [{ row: s.fromRow, col: s.fromCol }, { row: s.toRow, col: s.toCol }];
+      this.checkForLocalGameEnd(s.boardId);
+    }
   }
 }
 
