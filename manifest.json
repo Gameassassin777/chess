@@ -1,10 +1,10 @@
 {
-  "name": "Lakehouse Chess",
-  "short_name": "Lakehouse Chess",
+  "name": "Nexus Chess",
+  "short_name": "Nexus Chess",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#08090c",
-  "theme_color": "#0a0a0c",
+  "background_color": "#f5f6fa",
+  "theme_color": "#ffffff",
   "orientation": "portrait-primary",
   "icons": [
     {

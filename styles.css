@@ -3,6 +3,74 @@
    Optimized for iOS (Safari, Chrome) Full Screen Viewport. */
 
 :root {
+  /* Premium Light Mode Colors */
+  --bg-color: #f5f6fa;
+  --bg-gradient: radial-gradient(circle at top, #ffffff, #eef1f6);
+  --card-bg: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --accent-neon: #1062fe; /* Premium iOS Blue */
+  --accent-purple: #818cf8;
+  --shadow-premium: 0 8px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --panel-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+  
+  /* Buttons */
+  --btn-sec-bg: rgba(0, 0, 0, 0.04);
+  --btn-sec-border: rgba(0, 0, 0, 0.08);
+  
+  /* Inputs */
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: rgba(0, 0, 0, 0.12);
+  
+  /* Brand */
+  --brand-grad: linear-gradient(135deg, #1f2937, #4b5563);
+  
+  /* Lobby Rows */
+  --row-bg: rgba(0, 0, 0, 0.02);
+  --row-border: rgba(0, 0, 0, 0.04);
+
+  /* Default Piece Colors (Classic) */
+  --p-white-fill: #ffffff;
+  --p-white-stroke: #1e2430;
+  --p-white-detail: #8b9bb4;
+
+  --p-black-fill: #2c323f;
+  --p-black-stroke: #0a0b0d;
+  --p-black-detail: #ffffff;
+
+  --p-red-fill: #e11d48;
+  --p-red-stroke: #4c0519;
+  --p-red-detail: #ffffff;
+
+  --p-blue-fill: #2563eb;
+  --p-blue-stroke: #1e3a8a;
+  --p-blue-detail: #ffffff;
+
+  --p-yellow-fill: #d97706;
+  --p-yellow-stroke: #451a03;
+  --p-yellow-detail: #ffffff;
+
+  --p-green-fill: #16a34a;
+  --p-green-stroke: #064e3b;
+  --p-green-detail: #ffffff;
+
+  --p-grey-fill: #4b5563;
+  --p-grey-stroke: #111827;
+  --p-grey-detail: #d1d5db;
+
+  /* Board Themes (Defaults for Emerald-Glass) */
+  --board-border: #1e293b;
+  --sq-light: #f1f5f9;
+  --sq-dark: #10b981;
+  --sq-selected: rgba(16, 185, 129, 0.35);
+  --sq-highlight: rgba(16, 185, 129, 0.2);
+  --sq-check: rgba(239, 68, 68, 0.7);
+  --sq-last-move: rgba(245, 158, 11, 0.35);
+}
+
+/* Dark Mode Override */
+body.mode-dark {
   --bg-color: #08090c;
   --bg-gradient: radial-gradient(circle at top, #141824, #08090c);
   --card-bg: rgba(20, 24, 33, 0.65);
@@ -11,35 +79,28 @@
   --text-muted: #9ca3af;
   --accent-neon: #00f2fe;
   --accent-purple: #4facfe;
+  --shadow-premium: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --panel-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   
-  /* Default Piece Colors (Classic) */
-  --p-white-fill: #ffffff;
-  --p-white-stroke: #1e2430;
-  --p-white-detail: #8b9bb4;
+  /* Buttons */
+  --btn-sec-bg: rgba(255, 255, 255, 0.05);
+  --btn-sec-border: rgba(255, 255, 255, 0.08);
+  
+  /* Inputs */
+  --input-bg: rgba(0, 0, 0, 0.2);
+  --input-border: rgba(255, 255, 255, 0.08);
+  
+  /* Brand */
+  --brand-grad: linear-gradient(135deg, #ffffff, #8b9bb4);
+  
+  /* Lobby Rows */
+  --row-bg: rgba(255, 255, 255, 0.02);
+  --row-border: rgba(255, 255, 255, 0.04);
 
+  /* Piece Colors (Classic) */
   --p-black-fill: #252a37;
   --p-black-stroke: #0b0c10;
   --p-black-detail: #d2d8e6;
-
-  --p-red-fill: #ff3b30;
-  --p-red-stroke: #5e0c07;
-  --p-red-detail: #ffffff;
-
-  --p-blue-fill: #007aff;
-  --p-blue-stroke: #032152;
-  --p-blue-detail: #ffffff;
-
-  --p-yellow-fill: #ffcc00;
-  --p-yellow-stroke: #544402;
-  --p-yellow-detail: #18191d;
-
-  --p-green-fill: #34c759;
-  --p-green-stroke: #084717;
-  --p-green-detail: #ffffff;
-
-  --p-grey-fill: #555c6b;
-  --p-grey-stroke: #2c303b;
-  --p-grey-detail: #9aa1b0;
 
   /* Board Themes (Defaults for Emerald-Glass) */
   --board-border: #131b26;
@@ -67,9 +128,16 @@ body {
   color: var(--text-main);
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+
+body.game-active {
+  overflow: hidden;
+  height: 100vh;
+  height: -webkit-fill-available;
 }
 
 html {
@@ -169,13 +237,14 @@ html {
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--btn-sec-bg);
+  border-color: var(--btn-sec-border);
   color: var(--text-main);
 }
 
 .btn-secondary:active {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--btn-sec-bg);
+  opacity: 0.8;
   transform: scale(0.97);
 }
 
@@ -186,7 +255,7 @@ html {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--panel-shadow);
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -197,27 +266,64 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 24px;
-  padding-top: calc(40px + env(safe-area-inset-top));
-  padding-bottom: calc(24px + env(safe-area-inset-bottom));
-  height: 100vh;
-  gap: 32px;
-  overflow-y: auto;
+  padding-top: calc(60px + env(safe-area-inset-top));
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  gap: 24px;
+  width: 100%;
 }
 
 .brand-section {
   text-align: center;
+  margin-bottom: 8px;
 }
 
 .brand-section h1 {
   font-size: 2.8rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #fff, #8b9bb4);
+  background: var(--brand-grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.03em;
   margin-bottom: 4px;
+}
+
+/* Settings cog button */
+.btn-settings-icon {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top));
+  right: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-premium);
+  z-index: 999;
+  transition: all 0.2s ease;
+}
+
+.btn-settings-icon:active {
+  transform: scale(0.92);
+  background: var(--btn-sec-bg);
+}
+
+.lobby-player-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--row-bg);
+  border: 1px solid var(--row-border);
 }
 
 .brand-section p {
@@ -424,11 +530,12 @@ html {
   display: flex;
   flex-direction: column;
   padding: 24px;
-  padding-top: calc(30px + env(safe-area-inset-top));
-  padding-bottom: calc(24px + env(safe-area-inset-bottom));
-  height: 100vh;
+  padding-top: calc(40px + env(safe-area-inset-top));
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   gap: 20px;
-  overflow-y: auto;
+  width: 100%;
 }
 
 .lobby-headline {
@@ -558,8 +665,8 @@ html {
 }
 
 .select-premium {
-  background: rgba(13, 17, 28, 0.8);
-  border: 1px solid var(--card-border);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   color: var(--text-main);
   padding: 12px;
   border-radius: 10px;
@@ -567,6 +674,7 @@ html {
   font-size: 0.95rem;
   cursor: pointer;
   outline: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .select-premium:focus {
@@ -580,14 +688,15 @@ html {
 }
 
 .input-premium {
-  background: rgba(13, 17, 28, 0.8);
-  border: 1px solid var(--card-border);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   color: var(--text-main);
   padding: 12px;
   border-radius: 10px;
   font-family: inherit;
   font-size: 0.95rem;
   outline: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .input-premium:focus {
@@ -637,8 +746,39 @@ html {
 }
 
 .game-status-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.game-status-label::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--text-muted);
+}
+
+.game-status-label.my-turn {
+  color: var(--accent-neon);
+}
+
+.game-status-label.my-turn::before {
+  background-color: var(--accent-neon);
+  box-shadow: 0 0 8px var(--accent-neon);
+  animation: pulse-turn-dot 1s infinite alternate;
+}
+
+@keyframes pulse-turn-dot {
+  from { opacity: 0.5; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
 }
 
 .game-actions-header {
@@ -731,18 +871,18 @@ html {
 .board-wrapper {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: min(90vw, 52vh, 440px);
   aspect-ratio: 1 / 1;
   background-color: var(--board-border);
   padding: 4px;
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-premium);
   overflow: hidden;
   margin: 6px 0;
 }
 
 .board-wrapper.board-4player {
-  max-width: 500px;
+  max-width: min(90vw, 52vh, 440px);
 }
 
 .board-grid-8x8 {
@@ -1000,7 +1140,7 @@ html {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(10, 11, 15, 0.95);
+  background: var(--card-bg);
   border-top: 1px solid var(--card-border);
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
@@ -1011,8 +1151,9 @@ html {
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 70vh;
+  max-height: 80vh;
   overflow-y: auto;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
 }
 
 .customizer-drawer.show {
@@ -1046,8 +1187,8 @@ html {
 .theme-option-btn {
   padding: 12px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--btn-sec-bg);
+  border: 1px solid var(--btn-sec-border);
   color: var(--text-muted);
   font-weight: 600;
   font-size: 0.85rem;
@@ -1055,12 +1196,17 @@ html {
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  transition: all 0.2s ease;
 }
 
 .theme-option-btn.selected {
   border-color: var(--accent-neon);
   color: var(--accent-neon);
-  background: rgba(0, 242, 254, 0.05);
+  background: rgba(16, 98, 254, 0.08);
+}
+
+body.mode-dark .theme-option-btn.selected {
+  background: rgba(0, 242, 254, 0.08);
 }
 
 /* Board Themes */

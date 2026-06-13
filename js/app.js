@@ -51,8 +51,14 @@ class ChessApp {
   }
 
   init() {
-    // Inject global stylesheet selectors for themes
-    document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme}`;
+    // Read App Theme
+    this.appTheme = localStorage.getItem("chess_app_theme") || "light"; // Default to light mode
+
+    // Inject global stylesheet selectors for themes and modes
+    document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
+
+    // Build and append the customization drawer to the body once
+    document.body.appendChild(this.buildCustomizerDrawer());
 
     // Read room code from URL hash if present on load
     const hash = window.location.hash.replace("#", "").trim().toUpperCase();
@@ -201,6 +207,12 @@ class ChessApp {
     const container = document.getElementById("app");
     container.innerHTML = "";
 
+    if (screen === "game") {
+      document.body.classList.add("game-active");
+    } else {
+      document.body.classList.remove("game-active");
+    }
+
     if (screen === "home") {
       container.appendChild(this.buildHomeScreen());
     } else if (screen === "lobby") {
@@ -214,9 +226,12 @@ class ChessApp {
     const root = document.createElement("div");
     root.className = "home-container fade-in";
 
+    // Append floating settings button
+    root.appendChild(this.buildFloatingSettingsButton());
+
     const brand = document.createElement("div");
     brand.className = "brand-section";
-    brand.innerHTML = `<h1>LAKEHOUSE CHESS</h1><p>MULTIPLAYER CHESS VARIANTS</p>`;
+    brand.innerHTML = `<h1>NEXUS CHESS</h1><p>MULTIPLAYER CHESS VARIANTS</p>`;
     root.appendChild(brand);
 
     // Username Box
@@ -331,6 +346,9 @@ class ChessApp {
     const root = document.createElement("div");
     root.className = "lobby-container fade-in";
 
+    // Append floating settings button
+    root.appendChild(this.buildFloatingSettingsButton());
+
     const header = document.createElement("div");
     header.className = "lobby-headline";
     
@@ -372,13 +390,6 @@ class ChessApp {
       
       const row = document.createElement("div");
       row.className = "lobby-player-row";
-      row.style.display = "flex";
-      row.style.justifyContent = "space-between";
-      row.style.alignItems = "center";
-      row.style.padding = "10px 14px";
-      row.style.borderRadius = "8px";
-      row.style.background = "rgba(255, 255, 255, 0.02)";
-      row.style.border = "1px solid rgba(255, 255, 255, 0.04)";
 
       const identity = document.createElement("div");
       identity.className = "player-identity";
@@ -605,23 +616,33 @@ class ChessApp {
     const header = document.createElement("div");
     header.className = "game-header";
 
+    const turnColor = this.game.getTurnColor(this.variant === "bughouse" ? this.bughouseActiveBoard : "board");
+    const turnName = this.getPlayerNameByColor(turnColor, this.variant === "bughouse" ? this.bughouseActiveBoard : "board");
+    const isMe = this.isMyTurn(this.variant === "bughouse" ? this.bughouseActiveBoard : "board");
+    const statusText = isMe ? "YOUR TURN" : `${turnName}'s Turn`;
+
     const info = document.createElement("div");
     info.className = "game-title-info";
     info.innerHTML = `
-      <span class="game-variant-badge">${this.variant} chess</span>
-      <span class="game-status-label" style="text-transform:uppercase; font-size:0.7rem; font-weight:700; letter-spacing:0.02em;">Room: ${this.roomCode}</span>
+      <span class="game-variant-badge">${this.variant} chess — Room ${this.roomCode}</span>
+      <span class="game-status-label ${isMe ? 'my-turn' : ''}">${statusText}</span>
     `;
     header.appendChild(info);
 
     const actions = document.createElement("div");
     actions.className = "game-actions-header";
 
-    // Themes
-    const themeBtn = document.createElement("button");
-    themeBtn.className = "btn-premium btn-secondary btn-sm";
-    themeBtn.textContent = "Themes";
-    themeBtn.addEventListener("click", () => this.toggleCustomizer(true));
-    actions.appendChild(themeBtn);
+    // Settings
+    const settingsBtn = document.createElement("button");
+    settingsBtn.className = "btn-premium btn-secondary btn-sm";
+    settingsBtn.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>Settings
+    `;
+    settingsBtn.addEventListener("click", () => this.toggleCustomizer(true));
+    actions.appendChild(settingsBtn);
 
     // Exit
     const exitBtn = document.createElement("button");
@@ -639,15 +660,6 @@ class ChessApp {
     // 2. Active Game workspace
     const workspace = document.createElement("div");
     workspace.className = "game-workspace";
-
-    // Active Turn Banner
-    const turnColor = this.game.getTurnColor(this.variant === "bughouse" ? this.bughouseActiveBoard : "board");
-    const turnName = this.getPlayerNameByColor(turnColor, this.variant === "bughouse" ? this.bughouseActiveBoard : "board");
-    
-    const banner = document.createElement("div");
-    banner.className = "turn-banner";
-    banner.textContent = this.isMyTurn(this.variant === "bughouse" ? this.bughouseActiveBoard : "board") ? "YOUR TURN" : `${turnName}'s Turn`;
-    workspace.appendChild(banner);
 
     // Opponent Player Tag (Standard Chess)
     if (this.variant === "standard") {
@@ -903,9 +915,6 @@ class ChessApp {
     }
 
     root.appendChild(workspace);
-
-    // 4. Customization Drawer Menu
-    root.appendChild(this.buildCustomizerDrawer());
 
     return root;
   }
@@ -1301,6 +1310,23 @@ class ChessApp {
     this.renderScreen("game");
   }
 
+  buildFloatingSettingsButton() {
+    const btn = document.createElement("button");
+    btn.className = "btn-settings-icon";
+    btn.title = "Settings";
+    btn.innerHTML = `
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    `;
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.toggleCustomizer(true);
+    });
+    return btn;
+  }
+
   // Theme Customizer builder
   buildCustomizerDrawer() {
     const backdrop = document.createElement("div");
@@ -1314,11 +1340,19 @@ class ChessApp {
 
     drawer.innerHTML = `
       <div class="modal-header" style="margin-bottom: 16px;">
-        <span class="modal-title" style="font-size: 1.15rem;">Customization</span>
+        <span class="modal-title" style="font-size: 1.15rem;">Settings & Style</span>
         <button class="modal-close-btn" id="customizer-close-btn"></button>
       </div>
 
       <div class="settings-group" style="margin-bottom: 16px;">
+        <label class="settings-label">App Appearance</label>
+        <div class="theme-options-grid">
+          <button class="theme-option-btn ${this.appTheme === "light" ? "selected" : ""}" data-mode="light">Light Mode</button>
+          <button class="theme-option-btn ${this.appTheme === "dark" ? "selected" : ""}" data-mode="dark">Dark Mode</button>
+        </div>
+      </div>
+
+      <div class="settings-group" style="margin-bottom: 16px; border-top: 1px solid var(--card-border); padding-top: 16px;">
         <label class="settings-label">Board Style</label>
         <div class="theme-options-grid">
           <button class="theme-option-btn ${this.boardTheme === "emerald" ? "selected" : ""}" data-theme="emerald">Emerald</button>
@@ -1330,7 +1364,7 @@ class ChessApp {
         </div>
       </div>
 
-      <div class="settings-group">
+      <div class="settings-group" style="border-top: 1px solid var(--card-border); padding-top: 16px;">
         <label class="settings-label">Piece Style</label>
         <div class="theme-options-grid">
           <button class="theme-option-btn ${this.piecesTheme === "classic" ? "selected" : ""}" data-piece="classic">Classic</button>
@@ -1347,11 +1381,21 @@ class ChessApp {
         close.addEventListener("click", () => this.toggleCustomizer(false));
       }
 
+      drawer.querySelectorAll("[data-mode]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          this.appTheme = btn.dataset.mode;
+          localStorage.setItem("chess_app_theme", this.appTheme);
+          document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
+          drawer.querySelectorAll("[data-mode]").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+        });
+      });
+
       drawer.querySelectorAll("[data-theme]").forEach(btn => {
         btn.addEventListener("click", () => {
           this.boardTheme = btn.dataset.theme;
           localStorage.setItem("chess_board_theme", this.boardTheme);
-          document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme}`;
+          document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
           drawer.querySelectorAll("[data-theme]").forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
         });
@@ -1361,7 +1405,7 @@ class ChessApp {
         btn.addEventListener("click", () => {
           this.piecesTheme = btn.dataset.piece;
           localStorage.setItem("chess_pieces_theme", this.piecesTheme);
-          document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme}`;
+          document.body.className = `theme-${this.boardTheme} pieces-${this.piecesTheme} mode-${this.appTheme}`;
           drawer.querySelectorAll("[data-piece]").forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
           // Re-render the game screen to load new piece vectors
