@@ -1136,6 +1136,9 @@ class ChessApp {
   // Get Custom SVGs rendered dynamically with CSS variables
   getPieceVector(type, colorClass) {
     const symbol = type.toUpperCase();
+    if (this.piecesTheme === "holo") {
+      return `<div class="piece-sprite color-${colorClass} piece-${type.toLowerCase()}"></div>`;
+    }
     const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
     const paths = theme[symbol];
     if (!paths) return "";
@@ -1380,6 +1383,7 @@ class ChessApp {
           <button class="theme-option-btn ${this.piecesTheme === "metallic" ? "selected" : ""}" data-piece="metallic">Metallic</button>
           <button class="theme-option-btn ${this.piecesTheme === "neo" ? "selected" : ""}" data-piece="neo">Neo</button>
           <button class="theme-option-btn ${this.piecesTheme === "alpha" ? "selected" : ""}" data-piece="alpha">Alpha</button>
+          <button class="theme-option-btn ${this.piecesTheme === "holo" ? "selected" : ""}" data-piece="holo">Holo</button>
         </div>
       </div>
     `;
@@ -2153,11 +2157,15 @@ class ChessApp {
     
     let html = `<div class="captured-pieces-list" style="display:flex; flex-wrap:wrap; gap:2px; margin-top:2px; opacity:0.8;">`;
     list.forEach(pType => {
-      const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
-      const paths = theme[pType.toUpperCase()];
-      if (paths) {
-        const viewBox = theme.viewBox || "0 0 44 44";
-        html += `<svg viewBox="${viewBox}" class="piece color-${capturedColor}" style="width:16px; height:16px; filter:drop-shadow(0 1px 1px rgba(0,0,0,0.4));">${paths}</svg>`;
+      if (this.piecesTheme === "holo") {
+        html += `<div class="piece-sprite color-${capturedColor} piece-${pType.toLowerCase()}" style="width:16px; height:16px; flex-shrink:0;"></div>`;
+      } else {
+        const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
+        const paths = theme[pType.toUpperCase()];
+        if (paths) {
+          const viewBox = theme.viewBox || "0 0 44 44";
+          html += `<svg viewBox="${viewBox}" class="piece color-${capturedColor}" style="width:16px; height:16px; filter:drop-shadow(0 1px 1px rgba(0,0,0,0.4));">${paths}</svg>`;
+        }
       }
     });
     html += `</div>`;

@@ -1653,3 +1653,67 @@ body.mode-dark .theme-preview-box {
     box-shadow: var(--shadow-premium);
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   9. HOLO SPRITE SHEET THEME (Gemini-Generated Icons)
+   ────────────────────────────────────────────────────────────────────────── */
+.piece-sprite {
+  width: 90%;
+  height: 90%;
+  background-image: url('assets/holo_pieces.png');
+  background-size: 600% 600%;
+  background-position-y: 50%;
+  background-repeat: no-repeat;
+  display: block;
+  z-index: 5;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  mix-blend-mode: screen; /* Dynamically extracts transparent shapes from solid black bg */
+}
+
+/* Make active scale effects match SVG pieces */
+.piece-sprite:active {
+  transform: scale(1.12);
+}
+
+/* Align theme preview display sizing */
+.preview-cell .piece-sprite {
+  width: 76%;
+  height: 76%;
+}
+
+/* Map horizontal chess piece indices: pawn(0), knight(1), bishop(2), rook(3), queen(4), king(5) */
+.piece-sprite.piece-p { --piece-index: 0; }
+.piece-sprite.piece-n { --piece-index: 1; }
+.piece-sprite.piece-b { --piece-index: 2; }
+.piece-sprite.piece-r { --piece-index: 3; }
+.piece-sprite.piece-q { --piece-index: 4; }
+.piece-sprite.piece-k { --piece-index: 5; }
+
+.piece-sprite {
+  background-position-x: calc(var(--piece-index) * 20%);
+}
+
+/* Colorshift CSS filters for each player color (Base is Cyan) */
+.piece-sprite.color-white {
+  filter: saturate(0) brightness(1.7) contrast(1.1); /* Desaturate to pure glowing white icon */
+}
+
+.piece-sprite.color-black {
+  filter: hue-rotate(185deg) saturate(1.8) brightness(1.25); /* Gorgeous glowing magenta/pink icon */
+}
+
+.piece-sprite.color-red {
+  filter: hue-rotate(145deg) saturate(2.2) brightness(1.1); /* Glowing neon red icon */
+}
+
+.piece-sprite.color-blue {
+  filter: hue-rotate(0deg) saturate(1.6) brightness(1.1); /* Neon cyan/blue icon */
+}
+
+.piece-sprite.color-yellow {
+  filter: hue-rotate(225deg) saturate(2.4) brightness(1.15); /* Glowing neon gold/yellow icon */
+}
+
+.piece-sprite.color-green {
+  filter: hue-rotate(75deg) saturate(2.2) brightness(1.15); /* Glowing emerald green icon */
+}
