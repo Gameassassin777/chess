@@ -1,0 +1,20 @@
+name = "lakehouse-chess-sync"
+main = "worker.js"
+compatibility_date = "2026-05-25"
+
+# Durable Object bindings for lobby coordination and global store
+[[durable_objects.bindings]]
+name = "ROOM_LOBBY"
+class_name = "ChessRoom"
+
+[[durable_objects.bindings]]
+name = "GLOBAL_STORE"
+class_name = "ChessGlobalStore"
+
+# Database/Classes migration history
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChessRoom", "ChessGlobalStore"]
+
+[observability]
+enabled = true

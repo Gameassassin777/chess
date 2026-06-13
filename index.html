@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0a0c">
+  <title>Lakehouse Chess — Standard, Bughouse, 4-Player</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
 
+  <!-- Global SVG Gradients for Premium Board and Piece Themes (No Emojis) -->
+  <svg width="0" height="0" style="position: absolute; pointer-events: none;">
+    <defs>
+      <!-- Metallic Gold Gradient -->
+      <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffe259" />
+        <stop offset="30%" stop-color="#ffa751" />
+        <stop offset="70%" stop-color="#ffd700" />
+        <stop offset="100%" stop-color="#b8860b" />
+      </linearGradient>
+      
+      <!-- Metallic Silver Gradient -->
+      <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="40%" stop-color="#eef2f3" />
+        <stop offset="80%" stop-color="#8e9eab" />
+        <stop offset="100%" stop-color="#4a5568" />
+      </linearGradient>
+
+      <!-- Neon Cyan Cyber Gradient -->
+      <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00f2fe" />
+        <stop offset="100%" stop-color="#4facfe" />
+      </linearGradient>
+
+      <!-- Neon Pink Cyber Gradient -->
+      <linearGradient id="pink-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff0844" />
+        <stop offset="100%" stop-color="#ffb199" />
+      </linearGradient>
+
+      <!-- Metallic Ruby Gradient -->
+      <linearGradient id="ruby-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff5f6d" />
+        <stop offset="50%" stop-color="#d30000" />
+        <stop offset="100%" stop-color="#700000" />
+      </linearGradient>
+
+      <!-- Metallic Sapphire Gradient -->
+      <linearGradient id="sapphire-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4e54c8" />
+        <stop offset="50%" stop-color="#1b4fad" />
+        <stop offset="100%" stop-color="#0b2265" />
+      </linearGradient>
+
+      <!-- Metallic Emerald Gradient -->
+      <linearGradient id="emerald-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#11998e" />
+        <stop offset="50%" stop-color="#0f7d4b" />
+        <stop offset="100%" stop-color="#053e1f" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Toast Notification System -->
+  <div id="toast" class="toast-container"></div>
+
+  <div id="app">
+    <div class="initial-loader">
+      <div class="spinner"></div>
+      <div class="loader-text">Loading Lakehouse Chess...</div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
