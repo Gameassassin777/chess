@@ -14,9 +14,11 @@ class ChessApp {
     this.variant = "standard";
     this.mode = "ffa"; // 'ffa' or 'teams' (relevant for 4player)
     
-    this.clients = []; // { name, role, index }
+    this.clients = []; // { id, name, role, index }
+    this.clientId = null; // unique id assigned by the server for this connection
     this.game = null;
     this.socket = null;
+    this.lobbyBrowserInterval = null; // live-refresh timer for the public room browser
     
     // UI selections
     this.selectedCell = null; // { row, col }
@@ -431,14 +433,14 @@ class ChessApp {
         
         slotPlayers.forEach((p, pIdx) => {
           const nameSpan = document.createElement("span");
-          nameSpan.textContent = p.name + (p.name === this.username ? " (You)" : "") + (pIdx > 0 ? " [Partner]" : "");
+          nameSpan.textContent = p.name + (this.isSelf(p) ? " (You)" : "") + (pIdx > 0 ? " [Partner]" : "");
           nameSpan.style.fontWeight = "600";
           namesContainer.appendChild(nameSpan);
         });
         identity.appendChild(namesContainer);
         row.appendChild(identity);
 
-        const isAlreadyInThisSlot = slotPlayers.some(p => p.name === this.username);
+        const isAlreadyInThisSlot = slotPlayers.some(p => this.isSelf(p));
         if (slotPlayers.length === 1 && !isAlreadyInThisSlot) {
           const btn = document.createElement("button");
           btn.className = "btn-premium btn-primary btn-sm";
@@ -469,7 +471,7 @@ class ChessApp {
       spectators.forEach(s => {
         const span = document.createElement("span");
         span.className = "player-role-badge role-spectator";
-        span.textContent = s.name + (s.name === this.username ? " (You)" : "");
+        span.textContent = s.name + (this.isSelf(s) ? " (You)" : "");
         specList.appendChild(span);
       });
       playerPanel.appendChild(specList);
@@ -1490,18 +1492,53 @@ class ChessApp {
 
   async createRoom() {
     this.role = "player";
-    const variantQuery = this.variant === "4player" ? `${this.variant}&mode=${this.mode}` : this.variant;
-    
-    this.socket = new WebSocket(`${WS_BASE}/ws/create?name=${encodeURIComponent(this.username)}&variant=${encodeURIComponent(variantQuery)}&role=player`);
+    this.closeSocket();
+
+    const params = new URLSearchParams({
+      name: this.username,
+      variant: this.variant,
+      mode: this.mode,
+      role: "player"
+    });
+    this.socket = new WebSocket(`${WS_BASE}/ws/create?${params.toString()}`);
     this.setupSocketHandlers();
   }
 
   async joinRoom(code, spectate = false) {
     this.roomCode = code.toUpperCase();
     this.role = spectate ? "spectator" : "player";
+    this.closeSocket();
 
-    this.socket = new WebSocket(`${WS_BASE}/ws/join?code=${this.roomCode}&name=${encodeURIComponent(this.username)}&role=${this.role}&index=${this.playerIndex}`);
+    const params = new URLSearchParams({
+      code: this.roomCode,
+      name: this.username,
+      role: this.role,
+      index: String(this.playerIndex)
+    });
+    this.socket = new WebSocket(`${WS_BASE}/ws/join?${params.toString()}`);
     this.setupSocketHandlers();
+  }
+
+  // Tear down any existing connection before opening a new one so we don't
+  // leak stale sockets when switching rooms (e.g. browsing then joining).
+  closeSocket() {
+    if (this.socket) {
+      try {
+        this.socket.onclose = null;
+        this.socket.onerror = null;
+        this.socket.onmessage = null;
+        this.socket.close();
+      } catch (e) { /* ignore */ }
+      this.socket = null;
+    }
+  }
+
+  // True when a client list entry represents this connection. Prefers the
+  // server-assigned id; falls back to name match for older payloads.
+  isSelf(client) {
+    if (!client) return false;
+    if (this.clientId && client.id) return client.id === this.clientId;
+    return client.name === this.username;
   }
 
   setupSocketHandlers() {
@@ -1514,10 +1551,13 @@ class ChessApp {
         const msg = JSON.parse(event.data);
 
         if (msg.type === "connected") {
+          this.clientId = msg.clientId || this.clientId;
           this.roomCode = msg.code;
           this.role = msg.role;
           this.playerIndex = msg.index;
-          
+          if (msg.variant) this.variant = msg.variant;
+          if (msg.mode) this.mode = msg.mode;
+
           localStorage.setItem("active_room_code", this.roomCode);
           localStorage.setItem("active_room_name", this.username);
           localStorage.setItem("active_room_role", this.role);
@@ -1538,9 +1578,15 @@ class ChessApp {
 
         else if (msg.type === "room_list") {
           this.variant = msg.variant;
+          if (msg.mode) this.mode = msg.mode;
           this.clients = msg.clients;
-          
-          const self = this.clients.find(c => c.name === this.username);
+
+          // Identify ourselves by the server-assigned clientId so duplicate
+          // display names (e.g. the default "ChessFan") don't collide. Fall
+          // back to name matching only if the server didn't supply an id.
+          const self = this.clientId
+            ? this.clients.find(c => c.id === this.clientId)
+            : this.clients.find(c => c.name === this.username);
           if (self) {
             this.role = self.role;
             this.playerIndex = self.index;
@@ -1840,7 +1886,7 @@ class ChessApp {
         body: JSON.stringify({
           code: this.roomCode,
           host: this.username,
-          playerCount: this.clients.length,
+          playerCount: Math.max(1, this.clients.length),
           variant: this.variant,
           private: false
         })
@@ -1867,18 +1913,9 @@ class ChessApp {
     }
   }
 
-  async openLobbyBrowser() {
-    try {
-      const res = await fetch(`${HTTP_BASE}/rooms/list?variant=${encodeURIComponent(this.variant)}`);
-      this.publicLobbies = await res.json();
-    } catch (e) {
-      this.publicLobbies = [];
-      this.showToast("Failed to fetch public rooms.");
-    }
-    this.renderLobbyBrowserModal();
-  }
-
-  renderLobbyBrowserModal() {
+  openLobbyBrowser() {
+    // Build the modal shell once, then poll the cloud list so the browser
+    // reflects rooms opening/closing live without the user re-opening it.
     const browser = document.createElement("div");
     browser.className = "lobby-browser-modal";
     browser.id = "lobby-browser-modal";
@@ -1889,16 +1926,73 @@ class ChessApp {
     const header = document.createElement("div");
     header.className = "modal-header";
     header.innerHTML = `<span class="modal-title">Open Lobbies</span>`;
-    
+
     const closeBtn = document.createElement("button");
     closeBtn.className = "modal-close-btn";
     closeBtn.appendChild(this.buildCloseSvg());
-    closeBtn.addEventListener("click", () => browser.remove());
+    closeBtn.addEventListener("click", () => this.closeLobbyBrowser());
     header.appendChild(closeBtn);
     content.appendChild(header);
 
     const list = document.createElement("div");
     list.className = "lobby-list";
+    list.innerHTML = `<div class="lobby-empty">Loading open lobbies…</div>`;
+    content.appendChild(list);
+
+    browser.appendChild(content);
+    // Dismiss when tapping the backdrop (outside the panel).
+    browser.addEventListener("click", (e) => {
+      if (e.target === browser) this.closeLobbyBrowser();
+    });
+    document.body.appendChild(browser);
+
+    // Immediate fetch, then live refresh every 2 seconds while open.
+    this.refreshLobbyList(list);
+    this.stopLobbyBrowserPolling();
+    this.lobbyBrowserInterval = setInterval(() => this.refreshLobbyList(list), 2000);
+  }
+
+  stopLobbyBrowserPolling() {
+    if (this.lobbyBrowserInterval) {
+      clearInterval(this.lobbyBrowserInterval);
+      this.lobbyBrowserInterval = null;
+    }
+  }
+
+  closeLobbyBrowser() {
+    this.stopLobbyBrowserPolling();
+    const browser = document.getElementById("lobby-browser-modal");
+    if (browser) browser.remove();
+  }
+
+  async refreshLobbyList(listEl) {
+    // List every open room (no variant filter) so players can find any game;
+    // each row shows its variant. Joining adopts the room's variant/mode from
+    // the server handshake.
+    let rooms = [];
+    try {
+      const res = await fetch(`${HTTP_BASE}/rooms/list`);
+      rooms = await res.json();
+    } catch (e) {
+      // Keep the previous list on a transient network hiccup.
+      if (!listEl.dataset.loaded) {
+        listEl.innerHTML = `<div class="lobby-empty">Couldn't reach the lobby server. Retrying…</div>`;
+      }
+      return;
+    }
+
+    this.publicLobbies = Array.isArray(rooms) ? rooms : [];
+    this.renderLobbyList(listEl);
+  }
+
+  renderLobbyList(listEl) {
+    listEl.dataset.loaded = "1";
+    listEl.textContent = "";
+
+    if (this.publicLobbies.length === 0) {
+      listEl.innerHTML = `<div class="lobby-empty">No active public rooms found. Try creating one!</div>`;
+      return;
+    }
 
     this.publicLobbies.forEach(room => {
       const item = document.createElement("div");
@@ -1919,8 +2013,10 @@ class ChessApp {
       joinPlay.className = "btn-premium btn-primary btn-sm";
       joinPlay.textContent = "Play";
       joinPlay.addEventListener("click", () => {
+        this.playerIndex = -1; // let the server seat us in a free slot
+        this.variant = room.variant;
         this.joinRoom(room.code, false);
-        browser.remove();
+        this.closeLobbyBrowser();
       });
       actions.appendChild(joinPlay);
 
@@ -1928,22 +2024,15 @@ class ChessApp {
       joinSpec.className = "btn-premium btn-secondary btn-sm";
       joinSpec.textContent = "Watch";
       joinSpec.addEventListener("click", () => {
+        this.variant = room.variant;
         this.joinRoom(room.code, true);
-        browser.remove();
+        this.closeLobbyBrowser();
       });
       actions.appendChild(joinSpec);
 
       item.appendChild(actions);
-      list.appendChild(item);
+      listEl.appendChild(item);
     });
-
-    if (this.publicLobbies.length === 0) {
-      list.innerHTML = `<div class="lobby-empty">No active public rooms found. Try creating one!</div>`;
-    }
-
-    content.appendChild(list);
-    browser.appendChild(content);
-    document.body.appendChild(browser);
   }
 
   // Sync settings changes across clients (lobby phase)
