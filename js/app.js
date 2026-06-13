@@ -1139,7 +1139,8 @@ class ChessApp {
     const theme = PIECE_THEMES[this.piecesTheme] || PIECE_THEMES.classic;
     const paths = theme[symbol];
     if (!paths) return "";
-    return `<svg viewBox="0 0 44 44" class="piece color-${colorClass}">${paths}</svg>`;
+    const viewBox = theme.viewBox || "0 0 44 44";
+    return `<svg viewBox="${viewBox}" class="piece color-${colorClass}">${paths}</svg>`;
   }
 
   // Handle movements or drops click interaction

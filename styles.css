@@ -1401,6 +1401,12 @@ body.theme-royal .preview-cell.dark {
 /* Alpha Theme (Staunton publishing layout) */
 .pieces-alpha .piece {
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.28));
+  --alpha-fill: var(--piece-fill);
+  --alpha-stroke: var(--piece-stroke);
+}
+.pieces-alpha .piece.color-black {
+  --alpha-fill: var(--p-black-fill);
+  --alpha-stroke: var(--p-black-detail);
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
