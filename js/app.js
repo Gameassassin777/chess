@@ -341,6 +341,65 @@ class ChessApp {
     btnBox.appendChild(browseBtn);
 
     root.appendChild(btnBox);
+
+    // Join a friend's lobby directly by its 4-character room code.
+    const joinBox = document.createElement("div");
+    joinBox.className = "glass-panel";
+    joinBox.style.padding = "20px";
+    joinBox.style.width = "100%";
+    joinBox.style.maxWidth = "420px";
+    joinBox.style.display = "flex";
+    joinBox.style.flexDirection = "column";
+    joinBox.style.gap = "8px";
+
+    const joinLabel = document.createElement("label");
+    joinLabel.className = "settings-label";
+    joinLabel.textContent = "Join with Code";
+    joinBox.appendChild(joinLabel);
+
+    const joinRow = document.createElement("div");
+    joinRow.style.display = "flex";
+    joinRow.style.gap = "8px";
+
+    const codeInput = document.createElement("input");
+    codeInput.type = "text";
+    codeInput.className = "input-premium";
+    codeInput.placeholder = "ENTER CODE";
+    codeInput.maxLength = 4;
+    codeInput.autocapitalize = "characters";
+    codeInput.autocomplete = "off";
+    codeInput.style.flex = "1";
+    codeInput.style.textTransform = "uppercase";
+    codeInput.style.letterSpacing = "0.3em";
+    codeInput.style.textAlign = "center";
+    codeInput.style.fontWeight = "800";
+    codeInput.addEventListener("input", (e) => {
+      // Keep only valid code characters and force uppercase as the user types.
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z1-9]/g, "").slice(0, 4);
+    });
+
+    const joinBtn = document.createElement("button");
+    joinBtn.className = "btn-premium btn-primary";
+    joinBtn.textContent = "Join";
+    const submitJoin = () => {
+      const code = codeInput.value.toUpperCase().trim();
+      if (code.length !== 4) {
+        this.showToast("Enter the 4-character room code.");
+        return;
+      }
+      this.playerIndex = -1; // let the server seat us in a free slot
+      this.joinRoom(code, false);
+    };
+    joinBtn.addEventListener("click", submitJoin);
+    codeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submitJoin();
+    });
+
+    joinRow.appendChild(codeInput);
+    joinRow.appendChild(joinBtn);
+    joinBox.appendChild(joinRow);
+    root.appendChild(joinBox);
+
     return root;
   }
 
