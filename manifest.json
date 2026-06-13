@@ -1,0 +1,23 @@
+{
+  "name": "Lakehouse Chess",
+  "short_name": "Lakehouse Chess",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#08090c",
+  "theme_color": "#0a0a0c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

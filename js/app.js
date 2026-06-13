@@ -85,6 +85,111 @@ class ChessApp {
       this.role = cachedRole || "player";
       this.joinRoom(cachedCode);
     }
+
+    // Register Service Worker and initialize update checking
+    this.registerServiceWorker();
+  }
+
+  registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+          .then((registration) => {
+            console.log('ServiceWorker registered with scope:', registration.scope);
+            
+            // Check for updates on register
+            this.checkForUpdates();
+            
+            // Setup visibility check to aggressively look for updates when app is opened/restored
+            document.addEventListener('visibilitychange', () => {
+              if (document.visibilityState === 'visible') {
+                console.log('App visibility change: checking for updates...');
+                this.checkForUpdates();
+                registration.update().catch(err => console.warn('SW Update error:', err));
+              }
+            });
+
+            // Also check for updates when window receives focus
+            window.addEventListener('focus', () => {
+              console.log('App focus: checking for updates...');
+              this.checkForUpdates();
+              registration.update().catch(err => console.warn('SW Update error:', err));
+            });
+            
+            // Periodic check every 60 seconds
+            setInterval(() => {
+              this.checkForUpdates();
+              registration.update().catch(err => console.warn('SW Update error:', err));
+            }, 60000);
+          })
+          .catch((err) => {
+            console.error('ServiceWorker registration failed:', err);
+          });
+      });
+      
+      // If controller changes, another Service Worker took over. Force reload!
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          console.log('ServiceWorker controller changed. Reloading...');
+          window.location.reload();
+        }
+      });
+    }
+  }
+
+  async checkForUpdates() {
+    try {
+      // Fetch version.json from GitHub Pages or current server, force bypass browser cache
+      const response = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) return;
+      const data = await response.json();
+      
+      const currentVersion = localStorage.getItem("app_version");
+      
+      if (currentVersion && currentVersion !== data.version) {
+        console.log(`New version found: ${data.version} (current: ${currentVersion})`);
+        this.forceImmediateUpdate(data.version);
+      } else if (!currentVersion) {
+        // Initialize version tracking
+        localStorage.setItem("app_version", data.version);
+      }
+    } catch (err) {
+      console.warn("Failed to check for updates from GitHub:", err);
+    }
+  }
+
+  async forceImmediateUpdate(newVersion) {
+    this.showToast("Updating app to the latest version...");
+    
+    try {
+      // Clear Cache Storage
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+      }
+      
+      // Unregister Service Workers
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          await registration.unregister();
+        }
+      }
+      
+      // Update saved version in localStorage
+      localStorage.setItem("app_version", newVersion);
+      
+      // Force reload page from server bypassing browser cache
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (err) {
+      console.error("Error during force update:", err);
+      // Fallback reload
+      window.location.reload();
+    }
   }
 
   // ──────────────────────────────────────────────────────────────────────────
