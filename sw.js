@@ -1,4 +1,4 @@
-const CACHE_NAME = "nexus-chess-v8";
+const CACHE_NAME = "nexus-chess-v9";
 const ASSETS = [
   "./",
   "./index.html",

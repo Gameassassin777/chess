@@ -198,10 +198,12 @@ export class ChessRoom {
   constructor(state, env) {
     this.state = state;
     this.env = env;
-    this.sessions = new Map(); // ws -> { name, role: 'player'|'spectator', index: -1 }
+    this.sessions = new Map(); // ws -> { id, name, role: 'player'|'spectator', index: -1 }
     this.lastState = null;
     this.lastStateSender = null;
     this.variant = "standard"; // default
+    this.mode = "ffa"; // default (relevant for 4player)
+    this.nextClientId = 1; // monotonic id so clients can identify themselves reliably
   }
 
   async fetch(request) {
@@ -209,11 +211,13 @@ export class ChessRoom {
     const code = url.searchParams.get("code");
     const name = url.searchParams.get("name") || "Guest";
     const variant = url.searchParams.get("variant") || "standard";
+    const mode = url.searchParams.get("mode") || "ffa";
     const type = url.pathname.includes("create") ? "create" : "join";
     let requestedRole = url.searchParams.get("role") || "player";
     let requestedIndex = parseInt(url.searchParams.get("index") || "-1");
 
     this.variant = variant;
+    this.mode = mode;
 
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
@@ -223,6 +227,10 @@ export class ChessRoom {
 
   async handleSession(ws, code, name, variant, type, requestedRole, requestedIndex) {
     ws.accept();
+
+    // Unique per-connection id so the client can find itself in the room list
+    // even when multiple players share the same display name.
+    const clientId = `c${this.nextClientId++}`;
 
     // Max players checks
     let playerLimit = 2; // standard chess
@@ -240,27 +248,32 @@ export class ChessRoom {
       assignedRole = "spectator"; // Force spectator if full
     }
 
+    // Helper: how many players currently occupy a given slot index.
+    const occupantsAt = (idx) => {
+      let count = 0;
+      this.sessions.forEach(s => {
+        if (s.role === "player" && s.index === idx) count++;
+      });
+      return count;
+    };
+
     // Assign a player index if player role
     let playerIndex = -1;
     if (assignedRole === "player") {
-      let occupants = 0;
-      if (requestedIndex >= 0 && requestedIndex < playerLimit) {
-        this.sessions.forEach(s => {
-          if (s.role === "player" && s.index === requestedIndex) occupants++;
-        });
-      }
-      if (requestedIndex >= 0 && requestedIndex < playerLimit && occupants < 2) {
+      if (requestedIndex >= 0 && requestedIndex < playerLimit && occupantsAt(requestedIndex) < 2) {
+        // Honor an explicitly requested slot (e.g. reconnection / co-op claim).
         playerIndex = requestedIndex;
       } else {
-        // Find the first free index
+        // Prefer a completely empty slot first so distinct colors fill before
+        // anyone doubles up as a co-op partner (otherwise everyone piles into
+        // slot 0 and a 2-player game can never start).
         for (let i = 0; i < playerLimit; i++) {
-          let count = 0;
-          this.sessions.forEach(s => {
-            if (s.role === "player" && s.index === i) count++;
-          });
-          if (count < 2) {
-            playerIndex = i;
-            break;
+          if (occupantsAt(i) === 0) { playerIndex = i; break; }
+        }
+        // All slots have at least one player — allow co-op doubling (max 2/slot).
+        if (playerIndex === -1) {
+          for (let i = 0; i < playerLimit; i++) {
+            if (occupantsAt(i) < 2) { playerIndex = i; break; }
           }
         }
       }
@@ -269,15 +282,17 @@ export class ChessRoom {
       }
     }
 
-    this.sessions.set(ws, { name, role: assignedRole, index: playerIndex });
+    this.sessions.set(ws, { id: clientId, name, role: assignedRole, index: playerIndex });
 
     // Inform the client about successful connection and role assignment
     ws.send(JSON.stringify({
       type: "connected",
+      clientId,
       code,
       role: assignedRole,
       index: playerIndex,
-      variant
+      variant,
+      mode: this.mode
     }));
 
     // Broadcast current client list to the room
@@ -313,13 +328,15 @@ export class ChessRoom {
             session.role = "player";
             session.index = targetIndex;
             this.broadcastClientList();
-            
+
             ws.send(JSON.stringify({
               type: "connected",
+              clientId,
               code,
               role: "player",
               index: targetIndex,
-              variant
+              variant,
+              mode: this.mode
             }));
           } else {
             ws.send(JSON.stringify({
@@ -336,13 +353,15 @@ export class ChessRoom {
           session.role = "spectator";
           session.index = -1;
           this.broadcastClientList();
-          
+
           ws.send(JSON.stringify({
             type: "connected",
+            clientId,
             code,
             role: "spectator",
             index: -1,
-            variant
+            variant,
+            mode: this.mode
           }));
           return;
         }
@@ -421,12 +440,13 @@ export class ChessRoom {
   broadcastClientList() {
     const clients = [];
     this.sessions.forEach((s) => {
-      clients.push({ name: s.name, role: s.role, index: s.index });
+      clients.push({ id: s.id, name: s.name, role: s.role, index: s.index });
     });
 
     const payload = JSON.stringify({
       type: "room_list",
       variant: this.variant,
+      mode: this.mode,
       clients
     });
 
