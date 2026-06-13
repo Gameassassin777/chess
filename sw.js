@@ -1,4 +1,4 @@
-const CACHE_NAME = "lakehouse-chess-v1";
+const CACHE_NAME = "nexus-chess-v1.0.1";
 const ASSETS = [
   "./",
   "./index.html",
