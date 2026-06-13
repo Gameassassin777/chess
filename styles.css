@@ -60,9 +60,6 @@
   --p-grey-detail: #d1d5db;
 
   /* Board Themes (Defaults for Emerald-Glass) */
-  --board-border: #1e293b;
-  --sq-light: #f1f5f9;
-  --sq-dark: #10b981;
   --sq-selected: rgba(16, 185, 129, 0.35);
   --sq-highlight: rgba(16, 185, 129, 0.2);
   --sq-check: rgba(239, 68, 68, 0.7);
@@ -106,9 +103,6 @@ body.mode-dark {
   --p-black-detail: #d2d8e6;
 
   /* Board Themes (Defaults for Emerald-Glass) */
-  --board-border: #131b26;
-  --sq-light: #eceff4;
-  --sq-dark: #0d7b70;
   --sq-selected: rgba(0, 242, 254, 0.45);
   --sq-highlight: rgba(0, 242, 254, 0.25);
   --sq-check: rgba(255, 59, 48, 0.7);
@@ -1245,70 +1239,81 @@ body.mode-dark .theme-option-btn.selected {
 
 /* Board Themes */
 /* EMERALD (Default) */
-.theme-emerald {
+body.theme-emerald {
+  --sq-light: #f1f5f9;
+  --sq-dark: #10b981;
+  --board-border: #1e293b;
+}
+body.mode-dark.theme-emerald {
   --sq-light: #eceff4;
   --sq-dark: #0d7b70;
   --board-border: #131b26;
 }
 
 /* WOOD */
-.theme-wood {
+body.theme-wood {
   --sq-light: #f0d9b5;
   --sq-dark: #b58863;
   --board-border: #855833;
 }
 
 /* SLATE */
-.theme-slate {
+body.theme-slate {
   --sq-light: #e2e8f0;
   --sq-dark: #64748b;
   --board-border: #334155;
 }
 
 /* COSMIC-NEON */
-.theme-neon {
+body.theme-neon {
   --sq-light: #1e1e2d;
   --sq-dark: #0d0e14;
   --board-border: #1a1b26;
   --sq-last-move: rgba(255, 0, 127, 0.2);
 }
-.theme-neon .square-cell.light {
+body.theme-neon .square-cell.light,
+body.theme-neon .preview-cell.light {
   box-shadow: inset 0 0 1px rgba(0, 242, 254, 0.15);
 }
-.theme-neon .square-cell.dark {
+body.theme-neon .square-cell.dark,
+body.theme-neon .preview-cell.dark {
   box-shadow: inset 0 0 1px rgba(79, 172, 254, 0.15);
 }
 
 /* MARBLE (Gilded Marble) */
-.theme-marble {
+body.theme-marble {
   --sq-light: #f5f5f7;
   --sq-dark: #1f2024;
   --board-border: #0e0e10;
   --sq-last-move: rgba(212, 175, 55, 0.25);
 }
-.theme-marble .square-cell.light {
+body.theme-marble .square-cell.light,
+body.theme-marble .preview-cell.light {
   background-image: radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
                     linear-gradient(135deg, rgba(212, 175, 55, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(212, 175, 55, 0.03) 87.5%),
                     linear-gradient(45deg, rgba(212, 175, 55, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(212, 175, 55, 0.03) 87.5%);
   box-shadow: inset 0 0 4px rgba(212, 175, 55, 0.15);
 }
-.theme-marble .square-cell.dark {
+body.theme-marble .square-cell.dark,
+body.theme-marble .preview-cell.dark {
   background-image: radial-gradient(circle at 70% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
                     linear-gradient(135deg, rgba(212, 175, 55, 0.05) 25%, transparent 25.5%, transparent 74%, rgba(212, 175, 55, 0.05) 74.5%);
   box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8), inset 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
 /* ROYAL (Royal Velvet) */
-.theme-royal {
+body.theme-royal {
   --sq-light: #fffcf0;
   --sq-dark: #3b1e54;
   --board-border: #210936;
   --sq-last-move: rgba(255, 215, 0, 0.3);
 }
-.theme-royal .square-cell.light {
+body.theme-royal .square-cell.light,
+body.theme-royal .preview-cell.light {
   box-shadow: inset 0 0 3px rgba(255, 215, 0, 0.2);
 }
-.theme-royal .square-cell.dark {
+body.theme-royal .square-cell.dark,
+body.theme-royal .preview-cell.dark {
   background-image: radial-gradient(circle at center, #4c256c 0%, #311449 100%);
   box-shadow: inset 0 0 6px rgba(255, 215, 0, 0.15);
 }
@@ -1386,6 +1391,16 @@ body.mode-dark .theme-option-btn.selected {
   --piece-fill: url(#emerald-grad);
   --piece-stroke: #022010;
   --piece-detail: #dcfce7;
+}
+
+/* Neo Theme (Clean geometric layout) */
+.pieces-neo .piece {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.22));
+}
+
+/* Alpha Theme (Staunton publishing layout) */
+.pieces-alpha .piece {
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.28));
 }
 
 /* ──────────────────────────────────────────────────────────────────────────

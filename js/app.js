@@ -1375,6 +1375,8 @@ class ChessApp {
           <button class="theme-option-btn ${this.piecesTheme === "classic" ? "selected" : ""}" data-piece="classic">Classic</button>
           <button class="theme-option-btn ${this.piecesTheme === "cyber" ? "selected" : ""}" data-piece="cyber">Cyber</button>
           <button class="theme-option-btn ${this.piecesTheme === "metallic" ? "selected" : ""}" data-piece="metallic">Metallic</button>
+          <button class="theme-option-btn ${this.piecesTheme === "neo" ? "selected" : ""}" data-piece="neo">Neo</button>
+          <button class="theme-option-btn ${this.piecesTheme === "alpha" ? "selected" : ""}" data-piece="alpha">Alpha</button>
         </div>
       </div>
     `;

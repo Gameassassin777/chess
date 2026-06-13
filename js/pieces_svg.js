@@ -189,8 +189,108 @@ const METALLIC = {
   </g>`
 };
 
+
+const NEO = {
+  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 11,38 C 11,38 33,38 33,38 C 33,38 31,33 31,33 C 31,33 13,33 13,33 C 13,33 11,38 11,38 Z" fill="var(--piece-stroke)" />
+    <path d="M 14,33 C 14,23 17,19 22,19 C 27,19 30,23 30,33 Z" fill="var(--piece-fill)" />
+    <circle cx="22" cy="13" r="5" fill="var(--piece-fill)" />
+    <circle cx="22" cy="13" r="1.5" fill="var(--piece-detail)" stroke="none" />
+  </g>`,
+
+  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
+    <rect x="14" y="19" width="16" height="14" fill="var(--piece-fill)" />
+    <path d="M 12,19 L 12,11 L 16,11 L 16,15 L 20,15 L 20,11 L 24,11 L 24,15 L 28,15 L 28,11 L 32,11 L 32,19 Z" fill="var(--piece-fill)" />
+    <line x1="14" y1="19" x2="30" y2="19" stroke="var(--piece-detail)" stroke-width="1.5" />
+    <line x1="22" y1="22" x2="22" y2="30" stroke="var(--piece-detail)" stroke-width="1.5" />
+  </g>`,
+
+  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
+    <path d="M 30,33 C 30,25 28,19 23,17 C 26,14 26,9 22,6 C 18,3 15,6 12,9 C 10,12 8,16 8,20 C 8,24 10,25 12,25 C 15,25 16,21 19,21 C 21,21 20,25 19,27 C 17,29 13,30 13,33 Z" fill="var(--piece-fill)" />
+    <path d="M 14,14 C 17,17 21,18 23,17" stroke="var(--piece-detail)" stroke-width="2" />
+    <circle cx="14" cy="18" r="1.5" fill="var(--piece-detail)" stroke="none" />
+  </g>`,
+
+  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
+    <path d="M 14,33 C 12,23 16,14 22,12 C 28,14 32,23 30,33 Z" fill="var(--piece-fill)" />
+    <circle cx="22" cy="7" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
+    <path d="M 18,19 C 20,23 24,23 26,19" stroke="var(--piece-detail)" stroke-width="2" />
+    <path d="M 17,15 L 27,25" stroke="var(--piece-detail)" stroke-width="1.5" />
+  </g>`,
+
+  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
+    <path d="M 13,33 L 9,19 L 16,24 L 22,12 L 28,24 L 35,19 L 31,33 Z" fill="var(--piece-fill)" />
+    <circle cx="9" cy="19" r="2" fill="var(--piece-detail)" stroke="none" />
+    <circle cx="22" cy="12" r="2" fill="var(--piece-detail)" stroke="none" />
+    <circle cx="35" cy="19" r="2" fill="var(--piece-detail)" stroke="none" />
+    <circle cx="22" cy="23" r="3.5" fill="var(--piece-detail)" stroke="none" />
+  </g>`,
+
+  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 11,38 L 33,38 L 31,33 L 13,33 Z" fill="var(--piece-stroke)" />
+    <path d="M 13,33 L 9,20 L 17,23 L 22,14 L 27,23 L 35,20 L 31,33 Z" fill="var(--piece-fill)" />
+    <path d="M 22,14 L 22,6 M 18,9 L 26,9" stroke="var(--piece-stroke)" stroke-width="2" />
+    <line x1="14" y1="29" x2="30" y2="29" stroke="var(--piece-detail)" stroke-width="1.5" />
+    <line x1="17" y1="25" x2="27" y2="25" stroke="var(--piece-detail)" stroke-width="1.5" />
+  </g>`
+};
+
+const ALPHA = {
+  P: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 12,37 C 12,37 32,37 32,37 C 32,37 30,34 30,34 C 28,32 26,31 22,31 C 18,31 16,32 14,34 C 14,34 12,37 12,37 Z" fill="var(--piece-stroke)" />
+    <path d="M 15,31 C 15,25 18,20 22,20 C 26,20 29,25 29,31 Z" fill="var(--piece-fill)" />
+    <circle cx="22" cy="12.5" r="5.5" fill="var(--piece-fill)" />
+  </g>`,
+
+  R: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 10,38 L 34,38 C 34,35 32,34 30,34 L 14,34 C 12,34 10,35 10,38 Z" fill="var(--piece-stroke)" />
+    <path d="M 13,34 L 14.5,20 L 29.5,20 L 31,34 Z" fill="var(--piece-fill)" />
+    <path d="M 12,20 L 12,10 L 16,10 L 16,14 L 20,14 L 20,10 L 24,10 L 24,14 L 28,14 L 28,10 L 32,10 L 32,20 Z" fill="var(--piece-fill)" />
+    <line x1="14.5" y1="20" x2="29.5" y2="20" stroke="var(--piece-detail)" stroke-width="1.5" />
+  </g>`,
+
+  N: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 C 28,34 26,34 24,34 C 24,34 22,34 20,34 C 20,34 10,38 10,38 Z" fill="var(--piece-stroke)" />
+    <path d="M 30,34 C 30,22 26,17 21,14 C 25,10 24,5 20,4 C 15,3 12,7 10,10 C 8,13 7,17 7,21 C 7,24 9,25 11,25 C 13,25 14,21 17,21 C 19,21 18,25 17,27 C 15,29 11,30 11,34 Z" fill="var(--piece-fill)" />
+    <circle cx="13" cy="11.5" r="1.5" fill="var(--piece-detail)" stroke="none" />
+    <path d="M 18,5 C 20,8 22,9 24,8" stroke="var(--piece-detail)" stroke-width="1.2" />
+    <path d="M 16,7 C 18,10 20,11 22,10" stroke="var(--piece-detail)" stroke-width="1.2" />
+  </g>`,
+
+  B: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 C 28,34 26,34 24,34 C 24,34 22,34 20,34 C 20,34 10,38 10,38 Z" fill="var(--piece-stroke)" />
+    <path d="M 14,34 C 12,23 16,13 22,10 C 28,13 32,23 30,34 Z" fill="var(--piece-fill)" />
+    <circle cx="22" cy="6" r="2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1.5" />
+    <path d="M 24,14 L 18,20" stroke="var(--piece-stroke)" stroke-width="1.5" />
+    <path d="M 17,24 C 19,27 25,27 27,24" stroke="var(--piece-detail)" stroke-width="1.5" />
+  </g>`,
+
+  Q: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 L 14,34 C 12,34 10,35 10,38 Z" fill="var(--piece-stroke)" />
+    <path d="M 13,34 C 13,34 11,20 11,20 C 11,20 17,24 17,24 C 17,24 22,11 22,11 C 22,11 27,24 27,24 C 27,24 33,20 33,20 C 33,20 31,34 31,34 Z" fill="var(--piece-fill)" />
+    <circle cx="11" cy="20" r="1.8" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1" />
+    <circle cx="22" cy="11" r="2.2" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1" />
+    <circle cx="33" cy="20" r="1.8" fill="var(--piece-fill)" stroke="var(--piece-stroke)" stroke-width="1" />
+    <path d="M 16,28 C 19,30 25,30 28,28" stroke="var(--piece-detail)" stroke-width="1.5" />
+  </g>`,
+
+  K: `<g fill="none" stroke="var(--piece-stroke)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 10,38 C 10,38 34,38 34,38 C 34,35 32,34 30,34 L 14,34 C 12,34 10,35 10,38 Z" fill="var(--piece-stroke)" />
+    <path d="M 13,34 C 9,21 16,21 22,14 C 28,21 35,21 31,34 Z" fill="var(--piece-fill)" />
+    <path d="M 22,14 L 22,5 M 18,8 L 26,8" stroke="var(--piece-stroke)" stroke-width="2.2" />
+    <path d="M 15,26 C 18,29 26,29 29,26" stroke="var(--piece-detail)" stroke-width="1.5" />
+    <path d="M 14,30 C 17,32 27,32 30,30" stroke="var(--piece-detail)" stroke-width="1.2" />
+  </g>`
+};
+
 export const PIECE_THEMES = {
   classic: CLASSIC,
   cyber: CYBER,
-  metallic: METALLIC
+  metallic: METALLIC,
+  neo: NEO,
+  alpha: ALPHA
 };
